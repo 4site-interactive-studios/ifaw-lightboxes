@@ -3,5 +3,11 @@ export const run = () => {
   if (!("modal_options" in window)) {
     window.modal_options = {};
   }
+  if (!("modal_options2" in window)) {
+    window.modal_options2 = {};
+  }
+
+  //console.log(modal_options2);
   const ifawModal = new Modal(window.modal_options);
+  const ifawModal2 = new Modal(window.modal_options2);
 };

@@ -436,7 +436,7 @@ export class Modal {
     button.classList.add("loading");
     const options = {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       method: "POST",
       data: data,
@@ -444,19 +444,18 @@ export class Modal {
     };
     const self = this;
     axios.get("https://api.ifaw.org/api/funnel/signup").then((response) => {
-      
       axios(options)
         .then(function(response) {
           if ("result" in response.data && response.data.result == "success") {
             self.success();
           }
-          console.log(response);
+          //console.log(response);
         })
         .catch(function(response) {
           //handle error
           button.classList.remove("loading");
           alert("Error while subscribring. Please check your e-mail address.");
-          console.log(response);
+          //console.log(response);
         });
     });
   }

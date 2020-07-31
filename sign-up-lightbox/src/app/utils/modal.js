@@ -12,9 +12,15 @@ export class Modal {
       success_bottom: "",
       paragraph: "",
       button_label: "",
-      first_name: footer_form.querySelector("[name='first_name']").placeholder,
-      last_name: footer_form.querySelector("[name='last_name']").placeholder,
-      email: footer_form.querySelector("[name='email']").placeholder,
+      first_name: footer_form
+        ? footer_form.querySelector("[name='first_name']").placeholder
+        : "",
+      last_name: footer_form
+        ? footer_form.querySelector("[name='last_name']").placeholder
+        : "",
+      email: footer_form
+        ? footer_form.querySelector("[name='email']").placeholder
+        : "",
       blacklist: [],
       whitelist: [],
       dates: [],

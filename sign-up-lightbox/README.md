@@ -1,4 +1,4 @@
-# [LUMINATE] Finca Donation Form
+# IFAW Sign Up Lightbox
 
 ## Install Dependencies
 

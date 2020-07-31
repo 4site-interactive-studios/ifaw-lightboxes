@@ -1,0 +1,264 @@
+// @import "reset";
+@import "breakpoint-sass";
+@import "breakpoint-slicer";
+$slicer-breakpoints: 0 400px 600px 1024px 1440px;
+
+$txt: #000;
+$accent: #cd91d6;
+
+@keyframes spinner {
+  0% {
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
+
+body {
+  background-color: $accent;
+  // &::after {
+  //   height: 100vh;
+  //   opacity: 1;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   transition: opacity linear 0.1s;
+  //   content: "";
+  //   width: 100vw;
+  //   background: #fff;
+  //   z-index: 50;
+  // }
+  // &::before {
+  //   animation: 2s linear infinite spinner;
+  //   border: solid 3px #eee;
+  //   border-bottom-color: #ef6565;
+  //   border-radius: 50%;
+  //   content: "";
+  //   height: 40px;
+  //   left: 50%;
+  //   opacity: inherit;
+  //   position: absolute;
+  //   top: 50%;
+  //   transform: translate3d(-50%, -50%, 0);
+  //   transform-origin: center;
+  //   width: 40px;
+  //   will-change: transform;
+  //   z-index: 52;
+  // }
+  // &.loaded {
+  //   &::before,
+  //   &::after {
+  //     content: none;
+  //   }
+  // }
+}
+
+header {
+  svg {
+    path,
+    polygon {
+      fill: #fff;
+    }
+  }
+  nav {
+    a {
+      color: #fff !important;
+      &:hover {
+        color: #000 !important;
+      }
+    }
+    // Donate Button
+    & + div + div > a:first-child {
+      background-color: #fff !important;
+      color: $accent;
+      & + div > ul > li {
+        background-color: darken($accent, 5%);
+        &:hover {
+          background-color: darken($accent, 8%);
+          &::before {
+            border-bottom-color: darken($accent, 8%);
+          }
+        }
+        &::before {
+          border-bottom-color: darken($accent, 5%);
+        }
+      }
+    }
+  }
+  button i {
+    background-color: #fff !important;
+  }
+}
+main {
+  h2 {
+    color: #fff;
+  }
+}
+
+#FourSite {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  .swiper-slide {
+    width: 70%;
+    @include from(4) {
+      width: 55%;
+    }
+  }
+  .swiper-button-prev {
+    left: 90px;
+    transform: scaleX(-1);
+  }
+  .swiper-button-next {
+    right: 90px;
+  }
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none;
+    @include from(4) {
+      display: flex;
+    }
+    width: 80px;
+    height: 80px;
+    &::after {
+      content: "";
+      width: 80px;
+      height: 80px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><g fill="none" fill-rule="evenodd"><circle cx="40" cy="40" r="40" fill="%23cd91d6" fill-opacity=".8"/><path fill="%23FFF" d="M33 28l20.78 12L33 52z"/></g></svg>');
+    }
+    &:hover {
+      &::after {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><g fill="none" fill-rule="evenodd"><circle cx="40" cy="40" r="40" fill="%23cd91d6" fill-opacity=".4"/><path fill="%23FFF" d="M33 28l20.78 12L33 52z"/></g></svg>');
+      }
+    }
+  }
+
+  .card {
+    background-color: #fff;
+
+    width: 100%;
+    min-height: 540px;
+
+    @include from(4) {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: stretch;
+    }
+    .image,
+    .content {
+      width: 100%;
+      position: relative;
+      min-height: 260px;
+      @include from(4) {
+        width: 50%;
+      }
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .content {
+      @include from(4) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        max-width: 200px;
+        margin: auto;
+        @include from(3) {
+          max-width: 300px;
+        }
+        .heart {
+          display: block;
+          width: 33px;
+          height: 28px;
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="33" height="28" viewBox="0 0 33 28"><path fill="%23cd91d6" fill-rule="evenodd" d="M32.284 8.309c-.272-2.755-1.768-5.238-4.149-6.802-3.605-2.38-8.502-1.837-11.699 1.36l-.272.272-.442-.442C13.749.76 11.062-.228 8.274.045 5.519.317 3.037 1.813 1.472 4.16c-2.38 3.605-1.836 8.502 1.36 11.699l11.326 11.325c.544.544 1.224.816 2.006.816a2.95 2.95 0 0 0 2.007-.816l11.46-11.461a9.213 9.213 0 0 0 2.653-7.414z"/></svg>');
+          margin-top: -16px;
+          @include from(4) {
+            margin-bottom: 20px;
+            margin-top: 0;
+          }
+        }
+        .location {
+          font-family: akkurat, sans-serif;
+          font-size: 15px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.33;
+          letter-spacing: normal;
+          color: #000000;
+        }
+        h3 {
+          text-transform: lowercase;
+          font-family: graphik, sans-serif;
+          margin-top: 10px;
+          font-size: 22px;
+          font-weight: bold;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1;
+          letter-spacing: -0.7px;
+          color: #000000;
+          @include from(4) {
+            font-size: 44px;
+            margin-top: 35px;
+          }
+        }
+
+        .project {
+          font-family: graphik, sans-serif;
+          margin-top: 10px;
+          font-size: 15px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.4;
+          letter-spacing: -0.2px;
+          color: #000000;
+          @include from(4) {
+            font-size: 20px;
+            margin-top: 20px;
+          }
+        }
+        .cta {
+          text-transform: lowercase;
+          font-family: graphik, sans-serif;
+          display: inline-block;
+          margin-top: 10px;
+          font-size: 16px;
+          font-weight: bold;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.08;
+          letter-spacing: -0.4px;
+          text-align: center;
+          color: #ffffff;
+          background-color: $accent;
+          border: 2px solid $accent;
+          transition: 0.3s background-color ease, 0.3s color ease;
+          padding: 10px;
+          &:hover {
+            background-color: #fff;
+            color: $accent;
+          }
+          @include from(4) {
+            font-size: 26px;
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,11 @@
 import crumbs from "./crumbs";
 import axios from "./axios";
-export class Modal {
+export class Modal2 {
   constructor(options) {
     const footer_form = document.querySelector("footer form");
     const lang = document.documentElement.lang;
     this.options = {
-      cookie_name: "hideSignUpForm",
+      cookie_name: "hideSignUpForm2",
       heading_top: "",
       heading_bottom: "",
       success_top: "",
@@ -339,7 +339,7 @@ export class Modal {
         </div>
     </div>`;
     let overlay = document.createElement("div");
-    overlay.id = "ifawModal";
+    overlay.id = "ifawModal2";
     overlay.classList.add("is-hidden");
     overlay.classList.add(lang);
     overlay.classList.add(this.options.mode);
@@ -388,15 +388,15 @@ export class Modal {
 
   submit(e) {
     e.preventDefault();
-    const button = document.querySelector("#ifawModal button");
+    const button = document.querySelector("#ifawModal2 button");
     const url = "https://api.ifaw.org/api/subscribe";
-    let form = document.querySelector("#ifawModal form");
-    let email = document.querySelector("#ifawModal input[name='email']");
+    let form = document.querySelector("#ifawModal2 form");
+    let email = document.querySelector("#ifawModal2 input[name='email']");
     let first_name = document.querySelector(
-      "#ifawModal input[name='first_name']"
+      "#ifawModal2 input[name='first_name']"
     );
     let last_name = document.querySelector(
-      "#ifawModal input[name='last_name']"
+      "#ifawModal2 input[name='last_name']"
     );
 
     console.log(form.classList.contains("open"));

@@ -38,7 +38,7 @@ export class Modal2 {
         <div class="content">
           <div class="left">
             <h2 class="title">${this.options.heading_top}</h2>
-            <h2 class="success">${this.options.success_top}</h2>
+            <h2 class="success2">${this.options.success_top}</h2>
 
             <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="367" height="194" viewBox="0 0 367 194">
                 <g fill="#007EFF">
@@ -48,7 +48,7 @@ export class Modal2 {
                 </g>
             </svg>
             <h2 class="subtitle">${this.options.heading_bottom}</h2>
-            <p class="success">${this.options.success_bottom}</p>
+            <p class="success2">${this.options.success_bottom}</p>
             <svg class="logo" xmlns="http://www.w3.org/2000/svg" width="90" height="46" viewBox="0 0 90 46">
                 <g fill="none" fill-rule="evenodd">
                     <path fill="#000" d="M.415 34.9h8.26V10.915H.414V34.9zM4.522 8.622c2.583 0 4.567-1.789 4.567-4.22 0-2.43-1.984-4.264-4.567-4.264C1.938.138 0 1.972 0 4.402c0 2.431 1.938 4.22 4.522 4.22zM13.868 34.9h8.213V16.51h4.89v-5.595h-4.89v-2.11c0-1.559.83-2.613 2.767-2.613.923 0 1.661.137 2.26.32V.505C26.003.23 24.849 0 23.327 0c-5.721 0-9.458 2.844-9.458 8.805v2.11h-3.045v5.595h3.045V34.9zm21.73.55c3.874 0 5.996-1.604 7.15-3.347V34.9h8.027V19.354c0-6.376-4.244-9.082-10.887-9.082-6.598 0-11.165 2.844-11.534 8.623h7.751c.185-1.514 1.014-2.844 3.275-2.844 2.63 0 3.184 1.514 3.184 3.806v.551h-2.307c-8.027 0-12.826 2.202-12.826 7.842 0 5.091 3.83 7.2 8.166 7.2zm2.86-5.549c-1.938 0-2.86-.87-2.86-2.247 0-1.972 1.475-2.614 4.797-2.614h2.169v1.468c0 2.063-1.754 3.393-4.106 3.393zm19.703 5h8.028l3.736-13.392 3.6 13.391h7.888l7.659-23.985h-7.843L77.307 25.27 73.71 10.915h-6.644l-4.06 14.355L59.5 10.915h-8.627l7.29 23.985z"/>
@@ -58,7 +58,7 @@ export class Modal2 {
           </div>
           <div class="right">
             <h2 class="small-title">${this.options.heading_top}</h2>
-            <h2 class="small-success success">${this.options.success_top}</h2>
+            <h2 class="small-success2 success2">${this.options.success_top}</h2>
             <p class="form-desc">
               ${this.options.paragraph}
             </p>
@@ -334,7 +334,7 @@ export class Modal2 {
               </div>
             </form>
             <h2 class="small-subtitle">${this.options.heading_bottom}</h2>
-            <p class="small-success success">${this.options.success_bottom}</p>
+            <p class="small-success2 success2">${this.options.success_bottom}</p>
           </div>
         </div>
     </div>`;
@@ -460,12 +460,12 @@ export class Modal2 {
     });
   }
   success() {
-    let form = document.querySelector("#ifawModal form");
-    let form_desc = document.querySelector("#ifawModal .form-desc");
-    let title_small = document.querySelector("#ifawModal .small-title");
-    let title = document.querySelector("#ifawModal .title");
-    let subtitle = document.querySelector("#ifawModal .subtitle");
-    let subtitle_small = document.querySelector("#ifawModal .small-subtitle");
+    let form = document.querySelector("#ifawModal2 form");
+    let form_desc = document.querySelector("#ifawModal2 .form-desc");
+    let title_small = document.querySelector("#ifawModal2 .small-title");
+    let title = document.querySelector("#ifawModal2 .title");
+    let subtitle = document.querySelector("#ifawModal2 .subtitle");
+    let subtitle_small = document.querySelector("#ifawModal2 .small-subtitle");
     // Hide Title & Subtitle
     title.style.display = "none";
     title_small.style.display = "none";
@@ -473,7 +473,7 @@ export class Modal2 {
     subtitle_small.style.display = "none";
     // Show Success Messages
     document
-      .querySelectorAll(".success")
+      .querySelectorAll(".success2")
       .forEach((e) => (e.style.display = "block"));
     // Remove Form
     form.style.display = "none";

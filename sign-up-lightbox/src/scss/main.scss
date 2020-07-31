@@ -95,10 +95,10 @@ $cta: #007cf9;
           margin-right: auto;
         }
       }
-      .success {
+      .success, .success2 {
         display: none;
       }
-      p.success {
+      p.success, p.success2 {
         max-width: 260px;
         margin-left: auto;
         @include to(2) {
@@ -109,7 +109,7 @@ $cta: #007cf9;
       }
       .title,
       .subtitle,
-      h2.success {
+      h2.success, h2.success2 {
         font-size: 60px;
         font-weight: bold;
         font-stretch: normal;
@@ -299,7 +299,7 @@ $cta: #007cf9;
     .ifawModal-container {
       .title,
       .subtitle,
-      h2.success {
+      h2.success, h2.success2 {
         font-size: 44px;
         text-transform: lowercase;
         max-width: 305px;
@@ -321,7 +321,7 @@ $cta: #007cf9;
     .ifawModal-container {
       .title,
       .subtitle,
-      h2.success {
+      h2.success, h2.success2 {
         font-size: 52px;
         text-transform: lowercase;
         max-width: 270px;
@@ -366,7 +366,7 @@ $cta: #007cf9;
     justify-content: center;
     overflow: hidden;
     align-items: center;
-    .small-success,
+    .small-success, .small-success2,
     .small-title,
     .small-subtitle {
       display: none !important;

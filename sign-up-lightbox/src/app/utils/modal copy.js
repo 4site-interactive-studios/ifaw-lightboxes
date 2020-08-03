@@ -1,5 +1,6 @@
 //Determine whether the form is big or small
 //add a name in the form so it doesn't conflict with the other form
+//Used query selector to specify which form CSS needs to be changed when the user submits the form
 
 
 
@@ -9,7 +10,6 @@ export class Modal {
   constructor(options) {
     const footer_form = document.querySelector("footer form");
     const lang = document.documentElement.lang;
-    this.formID = Math.random().toString(36).substr(2, 9);
     this.options = {
       cookie_name: "hideSignUpForm",
       heading_top: "",
@@ -38,7 +38,8 @@ export class Modal {
       // If we're not between the running dates, get out
       return false;
     }
-
+    //randomID
+    //const formID = Math.random().toString(36).substr(2, 9);
     const markup = `
     <div class="ifawModal-container">
         <a href="#" class="button-close"></a>
@@ -346,10 +347,8 @@ export class Modal {
         </div>
     </div>`;
     let overlay = document.createElement("div");
-    
-    overlay.id = this.formID;
+    overlay.id = "ifawModal";
     overlay.classList.add("is-hidden");
-    overlay.classList.add("ifawModal");
     overlay.classList.add(lang);
     overlay.classList.add(this.options.mode);
     overlay.innerHTML = markup;
@@ -374,8 +373,6 @@ export class Modal {
     document.body.appendChild(overlay);
     window.setTimeout(this.open.bind(this), 2000);
   }
-
-  
   open() {
     this.overlay.classList.remove("is-hidden");
   }
@@ -397,34 +394,45 @@ export class Modal {
     this.overlay.classList.add("is-hidden");
   }
 
-  submit(e) {
+      //BACKUP
+    //const button = document.querySelector("#ifawModal button");
+    //let form = document.querySelector("#ifawModal form");
 
+  submit(e) {
     e.preventDefault();
-    const button = document.querySelector("#"+this.formID+" button");
+    //Added
+    const button = document.querySelector("."+this.options.mode+" button");
     const url = "https://api.ifaw.org/api/subscribe";
-    let form = document.querySelector("#"+this.formID+" form");
-    //Added a small form selector
-    //let form_small = document.querySelector("#ifawModal form[name='small']");
-    let email = document.querySelector("#"+this.formID+" input[name='email']");
+    let form = document.querySelector("#ifawModal form[name='"+this.options.mode+"']");
+    //Added a small form selector to determine whether the small form is open or not
+    let form_small = document.querySelector("#ifawModal form[name='small']");
+    let email = document.querySelector("#ifawModal input[name='email']");
     let first_name = document.querySelector(
-      "#"+this.formID+" input[name='first_name']"
+      "#ifawModal input[name='first_name']"
     );
     let last_name = document.querySelector(
-      "#"+this.formID+" input[name='last_name']"
+      "#ifawModal input[name='last_name']"
     );
 
     console.log(form.classList.contains("open"));
 
       //If the lightbox mode is small and it's not open, then we add the open class to open the form
-    if (this.options.mode == "small" && !form.classList.contains("open")) {
+      //BACKUP
+      //if (this.options.mode == "small" && !form.classList.contains("open")) {
+    if (this.options.mode == "small" && !form_small.classList.contains("open")) {
       //Add "open" class for the small lightbox when the small lightbox is closed
-      form.classList.add("open");
-      first_name.focus();
+      form_small.classList.add("open");
+      //Focus on the small form
+      form_small.first_name.focus();
+
+      //BACKUP
+      //form.classList.add("open");
+      //form.first_name.focus();
       return false;
     }
 
     // Validate First Name
-    if (first_name.value == "") {
+    if (form.first_name.value == "") {
       first_name.classList.add("error");
       button.classList.remove("loading");
       return false;
@@ -432,7 +440,7 @@ export class Modal {
       first_name.classList.remove("error");
     }
     // Validate Last Name
-    if (last_name.value == "") {
+    if (form.last_name.value == "") {
       last_name.classList.add("error");
       button.classList.remove("loading");
       return false;
@@ -440,7 +448,7 @@ export class Modal {
       last_name.classList.remove("error");
     }
     // Validate Email
-    if (!this.validateEmail(email.value)) {
+    if (!this.validateEmail(form.email.value)) {
       email.classList.add("error");
       button.classList.remove("loading");
       return false;
@@ -476,14 +484,26 @@ export class Modal {
     });
   }
   success() {
-    let form = document.querySelector("#"+this.formID+" form");
+    //Added
+    let form = document.querySelector("#ifawModal form");
     console.log(form);
-    let form_desc = document.querySelector("#"+this.formID+" .form-desc");
+    let form_desc = document.querySelector("."+this.options.mode+"").querySelector("#ifawModal .form-desc");
     console.log(form_desc);
-    let title_small = document.querySelector("#"+this.formID+" .small-title");
-    let title = document.querySelector("#"+this.formID+" .title");
-    let subtitle = document.querySelector("#"+this.formID+" .subtitle");
-    let subtitle_small = document.querySelector("#"+this.formID+" .small-subtitle");
+    let title_small = document.querySelector("."+this.options.mode+"").querySelector("#ifawModal .small-title");
+    let title = document.querySelector("."+this.options.mode+"").querySelector("#ifawModal .title");
+    let subtitle = document.querySelector("."+this.options.mode+"").querySelector("#ifawModal .subtitle");
+    let subtitle_small = document.querySelector("."+this.options.mode+"").querySelector("#ifawModal .small-subtitle");
+
+    //BACKUP
+    //let form = document.querySelector("#ifawModal form");
+    //console.log(form);
+    //let form_desc = document.querySelector("#ifawModal .form-desc");
+    //console.log(form_desc);
+    //let title_small = document.querySelector("#ifawModal .small-title");
+    //let title = document.querySelector("#ifawModal .title");
+    //let subtitle = document.querySelector("#ifawModal .subtitle");
+    //let subtitle_small = document.querySelector("#ifawModal .small-subtitle");
+
     // Hide Title & Subtitle
     title.style.display = "none";
     title_small.style.display = "none";
@@ -492,12 +512,14 @@ export class Modal {
     // Show Success Messages
 
     //Success message only appears based on the specified mode
+    //Added .querySelector("."+this.options.mode+"")
     document
       .querySelector("."+this.options.mode+"")
       .querySelectorAll(".success")
       .forEach((e) => (e.style.display = "block"));
     // Remove Form
-    form.style.display = "none";
+    //Added .querySelector("#ifawModal form[name='"+this.options.mode+"']")
+    document.querySelector("#ifawModal form[name='"+this.options.mode+"']").style.display = "none";
     form_desc.style.visibility = "hidden";
     // Create Cookie
     crumbs.set(this.options.cookie_name, 1, { type: "month", value: 12 }); // Create one year cookie

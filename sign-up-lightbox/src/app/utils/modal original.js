@@ -9,7 +9,6 @@ export class Modal {
   constructor(options) {
     const footer_form = document.querySelector("footer form");
     const lang = document.documentElement.lang;
-    this.formID = Math.random().toString(36).substr(2, 9);
     this.options = {
       cookie_name: "hideSignUpForm",
       heading_top: "",
@@ -38,7 +37,6 @@ export class Modal {
       // If we're not between the running dates, get out
       return false;
     }
-
     const markup = `
     <div class="ifawModal-container">
         <a href="#" class="button-close"></a>
@@ -346,10 +344,8 @@ export class Modal {
         </div>
     </div>`;
     let overlay = document.createElement("div");
-    
-    overlay.id = this.formID;
+    overlay.id = "ifawModal";
     overlay.classList.add("is-hidden");
-    overlay.classList.add("ifawModal");
     overlay.classList.add(lang);
     overlay.classList.add(this.options.mode);
     overlay.innerHTML = markup;
@@ -400,17 +396,17 @@ export class Modal {
   submit(e) {
 
     e.preventDefault();
-    const button = document.querySelector("#"+this.formID+" button");
+    const button = document.querySelector("#ifawModal button");
     const url = "https://api.ifaw.org/api/subscribe";
-    let form = document.querySelector("#"+this.formID+" form");
+    let form = document.querySelector("#ifawModal form");
     //Added a small form selector
     //let form_small = document.querySelector("#ifawModal form[name='small']");
-    let email = document.querySelector("#"+this.formID+" input[name='email']");
+    let email = document.querySelector("#ifawModal input[name='email']");
     let first_name = document.querySelector(
-      "#"+this.formID+" input[name='first_name']"
+      "#ifawModal input[name='first_name']"
     );
     let last_name = document.querySelector(
-      "#"+this.formID+" input[name='last_name']"
+      "#ifawModal input[name='last_name']"
     );
 
     console.log(form.classList.contains("open"));
@@ -476,14 +472,14 @@ export class Modal {
     });
   }
   success() {
-    let form = document.querySelector("#"+this.formID+" form");
+    let form = document.querySelector("#ifawModal form");
     console.log(form);
-    let form_desc = document.querySelector("#"+this.formID+" .form-desc");
+    let form_desc = document.querySelector("#ifawModal .form-desc");
     console.log(form_desc);
-    let title_small = document.querySelector("#"+this.formID+" .small-title");
-    let title = document.querySelector("#"+this.formID+" .title");
-    let subtitle = document.querySelector("#"+this.formID+" .subtitle");
-    let subtitle_small = document.querySelector("#"+this.formID+" .small-subtitle");
+    let title_small = document.querySelector("#ifawModal .small-title");
+    let title = document.querySelector("#ifawModal .title");
+    let subtitle = document.querySelector("#ifawModal .subtitle");
+    let subtitle_small = document.querySelector("#ifawModal .small-subtitle");
     // Hide Title & Subtitle
     title.style.display = "none";
     title_small.style.display = "none";
@@ -493,7 +489,6 @@ export class Modal {
 
     //Success message only appears based on the specified mode
     document
-      .querySelector("."+this.options.mode+"")
       .querySelectorAll(".success")
       .forEach((e) => (e.style.display = "block"));
     // Remove Form

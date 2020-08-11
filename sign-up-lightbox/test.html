@@ -2,6 +2,10 @@
 <html lang="en">
   <head>
     <title>Page title</title>
+    <script
+      type="text/javascript"
+      src="http://ifaw-lightboxes.test/sign-up-lightbox/dist/main.js"
+    ></script>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -153,26 +157,65 @@
     </div>
     <!-- Lightbox Test Start-->
     <script>
-      window.modal_options = {
-        cookie_name: "hideTestForm",
-        dates: ["01/01/2020", "09/30/2020"],
-        //whitelist: ["^/news", "^/press-releases"],
-        blacklist: ["^/de/email"],
-        heading_top: "stay in the nose",
-        heading_bottom: "Be ready to <strong>act</strong>",
-        //paragraph:"Stay up to date on the animals and issues you care about most. You can unsubscribe at any time. Test",
-        button_label: "subscribe",
-        first_name: "Your First Name",
-        last_name: "Your Last Name",
-        email: "Your Email Address",
-        success_top: "You’re signed up.",
-        success_bottom:
-          "Keep an eye on your inbox to learn more about ways you can create a better world for animals and people. <a href='https://secure.ifaw.org/united-states/50for50-help-animals-far-future'>Test Your Animal Knowledge!</a>",
-        mode: "big",
-      };
       var script = document.createElement("script");
       script.type = "text/javascript";
       script.src = "http://ifaw-lightboxes.test/sign-up-lightbox/dist/main.js";
+      script.onload = function() {
+        var modal_options = {
+          cookie_name: "hideTestForm",
+          dates: ["01/01/2020", "09/30/2020"],
+          //whitelist: ["^/news", "^/press-releases"],
+          blacklist: ["^/de/email"],
+          heading_top: "stay in the nose",
+          heading_bottom: "Be ready to <strong>act</strong>",
+          //paragraph:"Stay up to date on the animals and issues you care about most. You can unsubscribe at any time. Test",
+          button_label: "subscribe",
+          first_name: "Your First Name",
+          last_name: "Your Last Name",
+          email: "Your Email Address",
+          success_top: "You’re signed up.",
+          success_bottom:
+            "Keep an eye on your inbox to learn more about ways you can create a better world for animals and people. <a href='https://secure.ifaw.org/united-states/50for50-help-animals-far-future'>Test Your Animal Knowledge!</a>",
+          mode: "big",
+        };
+        var modal_options_2 = {
+          cookie_name: "hideTestForm2",
+          dates: ["01/01/2020", "09/30/2020"],
+          //whitelist: ["^/news", "^/press-releases"],
+          blacklist: ["^/de/email"],
+          heading_top: "stay in second nose",
+          heading_bottom: "Be ready to <strong>second</strong>",
+          //paragraph:"Stay up to date on the animals and issues you care about most. You can unsubscribe at any time. Test",
+          button_label: "subscribe",
+          first_name: "Your First Name",
+          last_name: "Your Last Name",
+          email: "Your Email Address",
+          success_top: "You’re signed up.",
+          success_bottom:
+            "Keep an eye on your inbox to learn more about ways you can create a better world for animals and people. <a href='https://secure.ifaw.org/united-states/50for50-help-animals-far-future'>Test Your Animal Knowledge!</a>",
+          mode: "small",
+        };
+        var modal_options_3 = {
+          cookie_name: "hideTestForm3",
+          dates: ["01/01/2020", "09/30/2020"],
+          //whitelist: ["^/news", "^/press-releases"],
+          blacklist: ["^/de/email"],
+          heading_top: "stay in third nose",
+          heading_bottom: "Be ready to <strong>third</strong>",
+          //paragraph:"Stay up to date on the animals and issues you care about most. You can unsubscribe at any time. Test",
+          button_label: "subscribe",
+          first_name: "Your First Name",
+          last_name: "Your Last Name",
+          email: "Your Email Address",
+          success_top: "You’re signed up.",
+          success_bottom:
+            "Keep an eye on your inbox to learn more about ways you can create a better world for animals and people. <a href='https://secure.ifaw.org/united-states/50for50-help-animals-far-future'>Test Your Animal Knowledge!</a>",
+          mode: "big",
+        };
+        const modal_one = new Modal(modal_options);
+        const modal_two = new Modal(modal_options_2);
+        const modal_three = new Modal(modal_options_3);
+      };
       // script.src = "https://s3.amazonaws.com/ifaw-4site/sign-up-lightbox/main.js";
       document.querySelector("head").appendChild(script);
     </script>

@@ -1,4 +1,5 @@
-import { run } from "./app/app";
+import { Modal } from "./app/utils/modal";
 import "./scss/main.scss";
 
-run();
+//run();
+window.Modal = Modal;

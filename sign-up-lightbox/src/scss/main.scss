@@ -16,11 +16,7 @@ $cta: #007cf9;
     transform: rotate(360deg);
   }
 }
-#ifawModal {
-  &.is-hidden {
-    top: -100vh;
-  }
-
+.ifawModal {
   .button-close {
     position: absolute;
     right: -32px;
@@ -366,6 +362,9 @@ $cta: #007cf9;
     justify-content: center;
     overflow: hidden;
     align-items: center;
+    &.is-hidden {
+      top: -100vh;
+    }
     .small-success,
     .small-title,
     .small-subtitle {

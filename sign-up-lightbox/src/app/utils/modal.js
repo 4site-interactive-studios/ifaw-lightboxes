@@ -334,7 +334,6 @@ export class Modal {
                 </select>
               </div>
               <div class="submit">
-                <input type="hidden" name="email-signup" value="true">
                 <button class="cta" type="button"><span>${this.options.button_label}</span></button>
               </div>
             </form>
@@ -440,7 +439,9 @@ export class Modal {
       email.classList.remove("error");
     }
 
-    let data = JSON.stringify(Object.fromEntries(new FormData(form)));
+    let formFields = Object.fromEntries(new FormData(form));
+    formFields["email-signup"] = true;
+    let data = JSON.stringify(formFields);
     button.classList.add("loading");
     const options = {
       headers: {

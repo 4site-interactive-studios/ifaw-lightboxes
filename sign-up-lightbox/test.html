@@ -193,7 +193,7 @@
           success_top: "You’re signed up.",
           success_bottom:
             "Keep an eye on your inbox to learn more about ways you can create a better world for animals and people. <a href='https://secure.ifaw.org/united-states/50for50-help-animals-far-future'>Test Your Animal Knowledge!</a>",
-          mode: "small",
+          mode: "small-multi",
         };
         var modal_options_3 = {
           cookie_name: "hideTestForm3",
@@ -212,9 +212,27 @@
             "Keep an eye on your inbox to learn more about ways you can create a better world for animals and people. <a href='https://secure.ifaw.org/united-states/50for50-help-animals-far-future'>Test Your Animal Knowledge!</a>",
           mode: "big",
         };
+        var modal_options_4 = {
+          cookie_name: "hideTestForm4",
+          dates: ["01/01/2020", "09/30/2020"],
+          //whitelist: ["^/news", "^/press-releases"],
+          blacklist: ["^/de/email"],
+          heading_top: "stay in second nose",
+          heading_bottom: "Be ready to <strong>second</strong>",
+          //paragraph:"Stay up to date on the animals and issues you care about most. You can unsubscribe at any time. Test",
+          button_label: "subscribe",
+          first_name: "Your First Name",
+          last_name: "Your Last Name",
+          email: "Your Email Address",
+          success_top: "You’re signed up.",
+          success_bottom:
+            "Keep an eye on your inbox to learn more about ways you can create a better world for animals and people. <a href='https://secure.ifaw.org/united-states/50for50-help-animals-far-future'>Test Your Animal Knowledge!</a>",
+          mode: "small-single",
+        };
         var modal_one = new Modal(modal_options);
         var modal_two = new Modal(modal_options_2);
         var modal_three = new Modal(modal_options_3);
+        var modal_four = new Modal(modal_options_4);
       };
       // script.src = "https://s3.amazonaws.com/ifaw-4site/sign-up-lightbox/main.js";
       document.querySelector("head").appendChild(script);

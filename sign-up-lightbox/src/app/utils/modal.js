@@ -29,7 +29,7 @@ export class Modal {
       blacklist: [],
       whitelist: [],
       dates: [],
-      mode: "big", // Or small
+      mode: "big", // big, small-single, small-multi
     };
     this.loadTranslation(lang);
     this.options = Object.assign(this.options, options);
@@ -408,7 +408,10 @@ export class Modal {
 
     console.log(form.classList.contains("open"));
 
-    if (this.options.mode == "small" && !form.classList.contains("open")) {
+    if (
+      this.options.mode == "small-multi" &&
+      !form.classList.contains("open")
+    ) {
       form.classList.add("open");
       first_name.focus();
       return false;

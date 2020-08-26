@@ -253,7 +253,9 @@ $cta: #007cf9;
       }
     }
   }
-  &.small {
+  &.small,
+  &.small-multi,
+  &.small-single {
     background-color: transparent;
     color: $bg;
     position: fixed;
@@ -289,6 +291,18 @@ $cta: #007cf9;
     .button-close {
       top: 25px;
       right: 15px;
+    }
+  }
+  &.small-single {
+    form {
+      .group {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        max-height: 100px !important;
+      }
+      .cta {
+        margin-top: 50px;
+      }
     }
   }
   &.de-DE {

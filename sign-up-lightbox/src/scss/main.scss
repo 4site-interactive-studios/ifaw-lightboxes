@@ -261,13 +261,23 @@ $cta: #007cf9;
     position: fixed;
     bottom: 0;
     right: 0;
-    bottom: 0;
     z-index: 2147483645;
     transition: bottom 0.4s ease-in-out;
+    &.mobile-fixed {
+      @include to(2) {
+        top: 0;
+        .ifawModal-container {
+          height: 100vh;
+          overflow-y: auto;
+        }
+      }
+    }
+
     strong {
       color: $txt;
     }
     &.is-hidden {
+      top: auto;
       bottom: -100vh;
     }
     .ifawModal-container {
@@ -275,6 +285,7 @@ $cta: #007cf9;
       height: auto;
       background-color: $accent;
       color: $bg;
+
       .cta {
         border: 2px solid $bg;
       }
@@ -293,7 +304,20 @@ $cta: #007cf9;
       right: 15px;
     }
   }
-  &.small-single {
+  &.small-single,
+  &.small {
+    @include to(2) {
+      top: 0;
+    }
+    &.is-hidden {
+      top: auto;
+    }
+    .ifawModal-container {
+      @include to(2) {
+        height: 100vh;
+        overflow-y: auto;
+      }
+    }
     form {
       .group {
         margin-top: 20px;

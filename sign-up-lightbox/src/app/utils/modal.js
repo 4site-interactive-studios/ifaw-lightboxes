@@ -29,6 +29,7 @@ export class Modal {
       blacklist: [],
       whitelist: [],
       dates: [],
+      source: "lightbox",
       mode: "big", // big, small-single, small-multi
     };
     this.loadTranslation(lang);
@@ -413,6 +414,7 @@ export class Modal {
       !form.classList.contains("open")
     ) {
       form.classList.add("open");
+      this.overlay.classList.add("mobile-fixed");
       first_name.focus();
       return false;
     }
@@ -444,6 +446,7 @@ export class Modal {
 
     let formFields = Object.fromEntries(new FormData(form));
     formFields["email-signup"] = true;
+    formFields["source"] = this.options.source;
     let data = JSON.stringify(formFields);
     button.classList.add("loading");
     const options = {

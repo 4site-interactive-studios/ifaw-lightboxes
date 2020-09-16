@@ -4,6 +4,7 @@ export class Modal {
   constructor(options) {
     const footer_form = document.querySelector("footer form");
     const lang = document.documentElement.lang;
+    window.dataLayer = window.dataLayer || [];
     this.overlayID =
       "ifaw-" +
       Math.random()
@@ -342,7 +343,8 @@ export class Modal {
             <p class="small-success success">${this.options.success_bottom}</p>
           </div>
         </div>
-    </div>`;
+    </div>
+    `;
     let overlay = document.createElement("div");
     overlay.id = this.overlayID;
     overlay.classList.add("is-hidden");
@@ -372,6 +374,9 @@ export class Modal {
     window.setTimeout(this.open.bind(this), 2000);
   }
   open() {
+
+    window.dataLayer.push({  'event': 'lightbox_display'});
+
     this.overlay.classList.remove("is-hidden");
   }
   // Should we run the script?
@@ -387,6 +392,7 @@ export class Modal {
   }
 
   close(e) {
+    window.dataLayer.push({  'event': 'lightbox_closed'});
     e.preventDefault();
     crumbs.set(this.options.cookie_name, 1, { type: "day", value: 1 }); // Create one day cookie
     this.overlay.classList.add("is-hidden");
@@ -476,6 +482,7 @@ export class Modal {
     });
   }
   success() {
+    window.dataLayer.push({'event' : 'lightbox_submit'});
     let form = document.querySelector("#" + this.overlayID + " form");
     let form_desc = document.querySelector(
       "#" + this.overlayID + " .form-desc"

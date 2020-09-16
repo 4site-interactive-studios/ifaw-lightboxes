@@ -16,11 +16,7 @@ $cta: #007cf9;
     transform: rotate(360deg);
   }
 }
-#ifawModal, #ifawModal2 {
-  &.is-hidden {
-    top: -100vh;
-  }
-
+.ifawModal {
   .button-close {
     position: absolute;
     right: -32px;
@@ -95,10 +91,10 @@ $cta: #007cf9;
           margin-right: auto;
         }
       }
-      .success, .success2 {
+      .success {
         display: none;
       }
-      p.success, p.success2 {
+      p.success {
         max-width: 260px;
         margin-left: auto;
         @include to(2) {
@@ -109,7 +105,7 @@ $cta: #007cf9;
       }
       .title,
       .subtitle,
-      h2.success, h2.success2 {
+      h2.success {
         font-size: 60px;
         font-weight: bold;
         font-stretch: normal;
@@ -257,19 +253,31 @@ $cta: #007cf9;
       }
     }
   }
-  &.small {
+  &.small,
+  &.small-multi,
+  &.small-single {
     background-color: transparent;
     color: $bg;
     position: fixed;
     bottom: 0;
     right: 0;
-    bottom: 0;
     z-index: 2147483645;
     transition: bottom 0.4s ease-in-out;
+    &.mobile-fixed {
+      @include to(2) {
+        top: 0;
+        .ifawModal-container {
+          height: 100vh;
+          overflow-y: auto;
+        }
+      }
+    }
+
     strong {
       color: $txt;
     }
     &.is-hidden {
+      top: auto;
       bottom: -100vh;
     }
     .ifawModal-container {
@@ -277,6 +285,7 @@ $cta: #007cf9;
       height: auto;
       background-color: $accent;
       color: $bg;
+
       .cta {
         border: 2px solid $bg;
       }
@@ -295,11 +304,36 @@ $cta: #007cf9;
       right: 15px;
     }
   }
+  &.small-single,
+  &.small {
+    @include to(2) {
+      top: 0;
+    }
+    &.is-hidden {
+      top: auto;
+    }
+    .ifawModal-container {
+      @include to(2) {
+        height: 100vh;
+        overflow-y: auto;
+      }
+    }
+    form {
+      .group {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        max-height: 100px !important;
+      }
+      .cta {
+        margin-top: 50px;
+      }
+    }
+  }
   &.de-DE {
     .ifawModal-container {
       .title,
       .subtitle,
-      h2.success, h2.success2 {
+      h2.success {
         font-size: 44px;
         text-transform: lowercase;
         max-width: 305px;
@@ -321,7 +355,7 @@ $cta: #007cf9;
     .ifawModal-container {
       .title,
       .subtitle,
-      h2.success, h2.success2 {
+      h2.success {
         font-size: 52px;
         text-transform: lowercase;
         max-width: 270px;
@@ -366,7 +400,10 @@ $cta: #007cf9;
     justify-content: center;
     overflow: hidden;
     align-items: center;
-    .small-success, .small-success2,
+    &.is-hidden {
+      top: -100vh;
+    }
+    .small-success,
     .small-title,
     .small-subtitle {
       display: none !important;

@@ -4,6 +4,11 @@ export class Modal {
   constructor(options) {
     const footer_form = document.querySelector("footer form");
     const lang = document.documentElement.lang;
+    this.overlayID =
+      "ifaw-" +
+      Math.random()
+        .toString(36)
+        .substring(7);
     this.options = {
       cookie_name: "hideSignUpForm",
       heading_top: "",
@@ -24,7 +29,8 @@ export class Modal {
       blacklist: [],
       whitelist: [],
       dates: [],
-      mode: "big", // Or small
+      source: "lightbox",
+      mode: "big", // big, small-single, small-multi
     };
     this.loadTranslation(lang);
     this.options = Object.assign(this.options, options);
@@ -329,7 +335,6 @@ export class Modal {
                 </select>
               </div>
               <div class="submit">
-                <input type="hidden" name="email-signup" value="true">
                 <button class="cta" type="button"><span>${this.options.button_label}</span></button>
               </div>
             </form>
@@ -339,10 +344,11 @@ export class Modal {
         </div>
     </div>`;
     let overlay = document.createElement("div");
-    overlay.id = "ifawModal";
+    overlay.id = this.overlayID;
     overlay.classList.add("is-hidden");
     overlay.classList.add(lang);
     overlay.classList.add(this.options.mode);
+    overlay.classList.add("ifawModal");
     overlay.innerHTML = markup;
     const closeButton = overlay.querySelector(".button-close");
     closeButton.addEventListener("click", this.close.bind(this));
@@ -388,21 +394,27 @@ export class Modal {
 
   submit(e) {
     e.preventDefault();
-    const button = document.querySelector("#ifawModal button");
+    const button = document.querySelector("#" + this.overlayID + " button");
     const url = "https://api.ifaw.org/api/subscribe";
-    let form = document.querySelector("#ifawModal form");
-    let email = document.querySelector("#ifawModal input[name='email']");
+    let form = document.querySelector("#" + this.overlayID + " form");
+    let email = document.querySelector(
+      "#" + this.overlayID + " input[name='email']"
+    );
     let first_name = document.querySelector(
-      "#ifawModal input[name='first_name']"
+      "#" + this.overlayID + " input[name='first_name']"
     );
     let last_name = document.querySelector(
-      "#ifawModal input[name='last_name']"
+      "#" + this.overlayID + " input[name='last_name']"
     );
 
     console.log(form.classList.contains("open"));
 
-    if (this.options.mode == "small" && !form.classList.contains("open")) {
+    if (
+      this.options.mode == "small-multi" &&
+      !form.classList.contains("open")
+    ) {
       form.classList.add("open");
+      this.overlay.classList.add("mobile-fixed");
       first_name.focus();
       return false;
     }
@@ -432,7 +444,10 @@ export class Modal {
       email.classList.remove("error");
     }
 
-    let data = JSON.stringify(Object.fromEntries(new FormData(form)));
+    let formFields = Object.fromEntries(new FormData(form));
+    formFields["email-signup"] = true;
+    formFields["source"] = this.options.source;
+    let data = JSON.stringify(formFields);
     button.classList.add("loading");
     const options = {
       headers: {
@@ -461,12 +476,18 @@ export class Modal {
     });
   }
   success() {
-    let form = document.querySelector("#ifawModal form");
-    let form_desc = document.querySelector("#ifawModal .form-desc");
-    let title_small = document.querySelector("#ifawModal .small-title");
-    let title = document.querySelector("#ifawModal .title");
-    let subtitle = document.querySelector("#ifawModal .subtitle");
-    let subtitle_small = document.querySelector("#ifawModal .small-subtitle");
+    let form = document.querySelector("#" + this.overlayID + " form");
+    let form_desc = document.querySelector(
+      "#" + this.overlayID + " .form-desc"
+    );
+    let title_small = document.querySelector(
+      "#" + this.overlayID + " .small-title"
+    );
+    let title = document.querySelector("#" + this.overlayID + " .title");
+    let subtitle = document.querySelector("#" + this.overlayID + " .subtitle");
+    let subtitle_small = document.querySelector(
+      "#" + this.overlayID + " .small-subtitle"
+    );
     // Hide Title & Subtitle
     title.style.display = "none";
     title_small.style.display = "none";

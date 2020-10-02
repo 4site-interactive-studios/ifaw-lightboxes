@@ -1,5 +1,9 @@
 # IFAW Sign Up Lightbox
 
+Documentation: https://docs.google.com/document/d/1YHERK9Sv_Ga4KGqN1SYWOec-lhD3NR2hW90-t4DRXMA/edit#heading=h.2opx6ool3nug
+
+Video Training: https://vimeo.com/4sitestudios/review/459151321/8f3557a04b
+
 ## Install Dependencies
 
 1. `npm install`

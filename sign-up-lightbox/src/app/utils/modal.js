@@ -30,6 +30,7 @@ export class Modal {
       blacklist: [],
       whitelist: [],
       dates: [],
+      double_opt_in_required: "0",
       source: "lightbox",
       mode: "big", // big, small-single, small-multi
     };
@@ -374,8 +375,7 @@ export class Modal {
     window.setTimeout(this.open.bind(this), 2000);
   }
   open() {
-
-    window.dataLayer.push({  'event': 'lightbox_display'});
+    window.dataLayer.push({ event: "lightbox_display" });
 
     this.overlay.classList.remove("is-hidden");
   }
@@ -392,7 +392,7 @@ export class Modal {
   }
 
   close(e) {
-    window.dataLayer.push({  'event': 'lightbox_closed'});
+    window.dataLayer.push({ event: "lightbox_closed" });
     e.preventDefault();
     crumbs.set(this.options.cookie_name, 1, { type: "day", value: 1 }); // Create one day cookie
     this.overlay.classList.add("is-hidden");
@@ -453,11 +453,12 @@ export class Modal {
     let formFields = Object.fromEntries(new FormData(form));
     formFields["email-signup"] = true;
     formFields["source"] = this.options.source;
+    formFields["double_opt_in_required"] = this.options.double_opt_in_required;
     let data = JSON.stringify(formFields);
     button.classList.add("loading");
     const options = {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       method: "POST",
       data: data,
@@ -465,7 +466,6 @@ export class Modal {
     };
     const self = this;
     axios.get("https://api.ifaw.org/api/funnel/signup").then((response) => {
-      
       axios(options)
         .then(function(response) {
           if ("result" in response.data && response.data.result == "success") {
@@ -482,7 +482,7 @@ export class Modal {
     });
   }
   success() {
-    window.dataLayer.push({'event' : 'lightbox_submit'});
+    window.dataLayer.push({ event: "lightbox_submit" });
     let form = document.querySelector("#" + this.overlayID + " form");
     let form_desc = document.querySelector(
       "#" + this.overlayID + " .form-desc"

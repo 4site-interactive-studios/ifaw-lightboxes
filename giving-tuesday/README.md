@@ -1,4 +1,54 @@
-# [IFAW] Splash Screen Script
+# IFAW Giving Tuesday Lightbox
+
+Giving Tuesday lightbox for IFAW Website
+
+## How to use
+
+Add the code below to the page you want to use the Giving Tuesday Lightbox:
+
+```html
+<script>
+  var modal = {
+    title: "help save baby animals <strong>this #givingtuesday</strong>",
+    paragraph:
+      "Make a gift to help IFAW teams rescue and rehabilitate the most vulnerable animals -- including baby elephants, koalas and rhinos!",
+    cta_label: "give now",
+    donation_link:
+      "https://secure.ifaw.org/united-states/save-wildlife-australia-bushfires",
+    background:
+      "https://ifaw-4site.s3.us-east-1.amazonaws.com/giving-tuesday/jaguars.jpg",
+    background_credit: "Photo © Alejandro Prieto",
+  };
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src =
+    "https://ifaw-4site.s3.us-east-1.amazonaws.com/giving-tuesday/dist/main.js";
+  document.querySelector("head").appendChild(script);
+</script>
+```
+
+The var `modal` above is where you put all the options for the Lightbox.
+
+## Options
+
+- **title** - Title of the Splash Screen
+- **paragraph** - Content of the Splash Screen
+- **amounts** - Array with numbers for the donation amounts
+- **currency** - Symbol used next to the donation amounts
+- **currency_position** - (left|right) Currency position
+- **other_label** - Label for the "Other Amount" field
+- **cta_label** - Label for the call-to-action button
+- **donation_link** - Link to the Donation Page
+- **background** - URL to the background image
+- **background_credit** - Credits to the image
+- **align** - (left|right) - Container's alignment
+- **start_date** - (mm/dd/YYYY) Date to Start the Campaign
+- **end_date** - (mm/dd/YYYY) Date to end the Campaign
+- **cookie_ttl** - Hours (number) to wait until showing the popup again
+
+## Development
+
+Your js code must be on the `src/app` folder. Styling changes must be on `src/scss`.
 
 ## Install Dependencies
 
@@ -8,4 +58,7 @@
 
 1. `npm run build`
 
-It's going to create a `dist` folder, where you can get the files and publish it.
+It's going to create a `dist` folder, where you can get the `main.js` file and publish it.
+
+Currently it's published on:  
+https://ifaw-4site.s3.us-east-1.amazonaws.com/giving-tuesday/dist/main.js

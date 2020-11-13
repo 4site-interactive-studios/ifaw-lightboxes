@@ -69,7 +69,7 @@ $cta: #007cf9;
     background-size: contain;
     background-repeat: no-repeat;
     @include to(2) {
-      top: 4vh;
+      top: 2vh;
     }
   }
 
@@ -85,7 +85,7 @@ $cta: #007cf9;
     border-radius: 50%;
     z-index: 100;
     @include to(2) {
-      top: 4vh;
+      top: 2vh;
     }
     &:hover {
       transform: scale(1.5);

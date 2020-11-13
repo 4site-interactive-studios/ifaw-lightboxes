@@ -2,7 +2,7 @@ import crumbs from "./crumbs";
 
 /**
  * Options:
- * 
+ *
  * title - Title of the Splash Screen
  * paragraph - Content of the Splash Screen
  * amounts - Array with numbers for the donation amounts
@@ -17,13 +17,13 @@ import crumbs from "./crumbs";
  * start_date - Date to Start the Campaign
  * end_date - Date to end the Campaign
  * cookie_ttl - Hours (number) to wait until showing the popup again
- * 
+ *
  */
 export class Modal {
   constructor(options) {
     this.options = Object.assign(
       {
-        title: "This is the super Lightbox",
+        title: "",
         paragraph: "",
         amounts: [50, 100, 250, 500],
         currency: "$",
@@ -46,9 +46,9 @@ export class Modal {
       return false;
     }
     const markup = `
-    <div class="desktop_bg ${this.options.align}" style="background-image: url('${
-      this.options.background
-    }');"></div>
+    <div class="desktop_bg ${
+      this.options.align
+    }" style="background-image: url('${this.options.background}');"></div>
     <div class="ifawSplash-container ${this.options.align}">
         <a href="javascript:void(0)" class="button-close"></a>
         <span href="#" class="logo">IFAW</span>
@@ -97,7 +97,9 @@ export class Modal {
     const closeButton = overlay.querySelector(".button-close");
     const amounts_cta = overlay.querySelectorAll(".amount, .cta");
     closeButton.addEventListener("click", this.close.bind(this));
-    amounts_cta.forEach((el) => el.addEventListener("click", this.close.bind(this)));
+    amounts_cta.forEach((el) =>
+      el.addEventListener("click", this.close.bind(this))
+    );
     closeButton.addEventListener("click", this.close.bind(this));
     document.addEventListener("keyup", (e) => {
       if (e.key === "Escape") {
@@ -128,12 +130,20 @@ export class Modal {
     }
   }
   close(e) {
-    crumbs.set("hideSplash", 1, { type: "hour", value: this.options.cookie_ttl }); // Create a cookie
+    crumbs.set("hideSplash", 1, {
+      type: "hour",
+      value: this.options.cookie_ttl,
+    }); // Create a cookie
     this.overlay.classList.add("is-hidden");
   }
-  getAmounts(){
+  getAmounts() {
     let ret = "";
-    this.options.amounts.forEach(e => ret = ret + `<a class="amount amount_${this.options.currency_position}" target="_blank" href="${this.options.donation_link}?amount=${e}"><span class="currency">${this.options.currency}</span><span class="amount_value">${e}</span></a>`);
+    this.options.amounts.forEach(
+      (e) =>
+        (ret =
+          ret +
+          `<a class="amount amount_${this.options.currency_position}" target="_blank" href="${this.options.donation_link}?amount=${e}"><span class="currency">${this.options.currency}</span><span class="amount_value">${e}</span></a>`)
+    );
     ret += `<a class="amount other_amount" target="_blank" href="${this.options.donation_link}"><span>${this.options.other_label}</span></a>`;
     return ret;
   }

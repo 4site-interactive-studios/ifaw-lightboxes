@@ -3,9 +3,9 @@
 @import "breakpoint-slicer";
 $slicer-breakpoints: 0 400px 775px 1200px 1440px;
 
-$bg: #007cf9;
+$bg: #ffab77;
 $txt: #fff;
-$accent: #007cf9;
+$accent: #000;
 $cta: #007cf9;
 
 #ifawSplash {
@@ -15,6 +15,8 @@ $cta: #007cf9;
   bottom: 0;
   z-index: 2147483645;
   background-color: rgba(0, 0, 0, 0.65);
+  background-size: calc(100vw - 650px) auto;
+  background-repeat: no-repeat;
   width: 100vw;
   height: 100%;
   transition: top 0.4s ease-in-out;
@@ -26,24 +28,27 @@ $cta: #007cf9;
     top: -100vh;
   }
 
-  .desktop_bg,
-  .mobile_bg {
+  .desktop_bg {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 100vw;
+    width: calc(100vw - 650px);
     height: 100%;
     display: none;
     background-size: cover;
+    background-position: center left;
     background-repeat: no-repeat;
     z-index: -1;
-  }
-  .mobile_bg {
+    &.left {
+      left: auto;
+      right: 0;
+    }
     @include to(2) {
-      display: block;
+      display: none;
     }
   }
+
   .desktop_bg {
     @include from(3) {
       display: block;
@@ -52,19 +57,18 @@ $cta: #007cf9;
 
   .logo {
     position: absolute;
+    z-index: 1;
     display: block;
     text-indent: -999999em;
     overflow: hidden;
     top: 6vh;
-    left: 7vw;
-    width: 200px;
-    height: 105px;
-    background-image: url("data:image/svg+xml;utf8,<svg width='109px' height='56px' viewBox='0 0 109 56' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'><path d='M0.505796791,42.4872 L10.5597433,42.4872 L10.5597433,13.2876 L0.505796791,13.2876 L0.505796791,42.4872 Z M5.50447059,10.4958 C8.64975401,10.4958 11.0646417,8.3187 11.0646417,5.3595 C11.0646417,2.4012 8.64975401,0.1674 5.50447059,0.1674 C2.35918717,0.1674 0,2.4012 0,5.3595 C0,8.3187 2.35918717,10.4958 5.50447059,10.4958 L5.50447059,10.4958 Z M16.8826524,42.4872 L26.8808984,42.4872 L26.8808984,20.0988 L32.8336684,20.0988 L32.8336684,13.2876 L26.8808984,13.2876 L26.8808984,10.7199 C26.8808984,8.8218 27.8906952,7.5375 30.2498824,7.5375 C31.3737754,7.5375 32.2721711,7.7049 33.0016684,7.9281 L33.0016684,0.6147 C31.6540749,0.2799 30.2498824,0 28.396492,0 C21.4321283,0 16.8826524,3.4623 16.8826524,10.719 L16.8826524,13.2876 L13.1758717,13.2876 L13.1758717,20.0988 L16.8826524,20.0988 L16.8826524,42.4872 Z M43.3359144,43.1568 C48.0533904,43.1568 50.6362781,41.2038 52.041369,39.0816 L52.041369,42.4872 L61.8132193,42.4872 L61.8132193,23.5611 C61.8132193,15.7995 56.6465455,12.5055 48.5591872,12.5055 C40.5275294,12.5055 34.9673583,15.9678 34.5181604,23.0022 L43.9540107,23.0022 C44.1786096,21.1599 45.1884064,19.5408 47.9410909,19.5408 C51.1420749,19.5408 51.8167701,21.384 51.8167701,24.174 L51.8167701,24.8445 L49.008385,24.8445 C39.2365348,24.8445 33.3942674,27.5247 33.3942674,34.3917 C33.3942674,40.5891 38.0560428,43.1568 43.3359144,43.1568 L43.3359144,43.1568 Z M46.8180963,36.4014 C44.4589091,36.4014 43.3359144,35.3412 43.3359144,33.6654 C43.3359144,31.2651 45.1327059,30.483 49.176385,30.483 L51.8167701,30.483 L51.8167701,32.2704 C51.8167701,34.7823 49.6821818,36.4014 46.8180963,36.4014 L46.8180963,36.4014 Z M70.805262,42.4872 L80.5780107,42.4872 L85.1265882,26.1846 L89.5080642,42.4872 L99.1119144,42.4872 L108.435465,13.2876 L98.8873155,13.2876 L94.1132406,30.7629 L89.7326631,13.2876 L81.6444064,13.2876 L76.7023316,30.7629 L72.4340535,13.2876 L61.9309091,13.2876 L70.805262,42.4872 L70.805262,42.4872 Z' fill='%23FFFFFF'></path><polygon fill='%23FFFFFF' points='35 55.8112 62.2564278 55.8112 62.2564278 49 35 49'></polygon></g></svg>");
+    left: 4vw;
+    width: 116px;
+    height: 60px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="117" height="60" fill="none" viewBox="0 0 117 60"><g fill-rule="evenodd" clip-path="url(%23clip0)" clip-rule="evenodd"><path fill="%23fff" d="M.542 45.522h10.772V14.237H.542v31.285zm5.356-34.276c3.37 0 5.957-2.333 5.957-5.504 0-3.17-2.587-5.563-5.957-5.563C2.528.18 0 2.573 0 5.742c0 3.17 2.528 5.503 5.898 5.503zm12.19 34.276h10.713V21.534h6.378v-7.297H28.8v-2.751c0-2.034 1.082-3.41 3.61-3.41 1.204 0 2.166.18 2.948.418V.66C33.915.299 32.41 0 30.425 0c-7.462 0-12.336 3.71-12.336 11.485v2.752h-3.972v7.297h3.972v23.988zm28.343.717c5.055 0 7.822-2.092 9.328-4.366v3.649h10.47V25.244c0-8.316-5.536-11.845-14.201-11.845-8.606 0-14.563 3.71-15.044 11.246h10.11c.24-1.974 1.322-3.708 4.271-3.708 3.43 0 4.153 1.974 4.153 4.964v.718h-3.009c-10.47 0-16.73 2.872-16.73 10.23 0 6.64 4.995 9.39 10.652 9.39zm3.731-7.237c-2.527 0-3.73-1.136-3.73-2.932 0-2.572 1.924-3.41 6.257-3.41h2.829v1.915c0 2.692-2.287 4.426-5.356 4.426zm25.7 6.52h10.472l4.873-17.467 4.695 17.467h10.289l9.99-31.285h-10.23l-5.115 18.723-4.694-18.723h-8.666L82.181 32.96l-4.573-18.723H66.354l9.509 31.285z"/><path fill="%23FFAB77" d="M37.5 59.798h29.203V52.5H37.5v7.298z"/></g><defs><clipPath id="clip0"><path fill="%23fff" d="M0 0H116.786V60H0z"/></clipPath></defs></svg>');
     background-size: contain;
     background-repeat: no-repeat;
     @include to(2) {
-      width: 150px;
-      height: 80px;
       top: 4vh;
     }
   }
@@ -106,7 +110,7 @@ $cta: #007cf9;
   .ifawSplash-container {
     color: $txt;
     font-family: graphik, sans-serif;
-    font-size: 70px;
+    font-size: 20px;
     line-height: 1;
     font-weight: 700;
     z-index: 1;
@@ -124,28 +128,20 @@ $cta: #007cf9;
 
     .container {
       position: absolute;
-      max-width: 650px;
-      padding: 0 7vw 10vh;
+      max-width: 690px;
+      padding: 10vh 5vw;
       bottom: 0;
-      box-sizing: content-box;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: $bg;
+      box-sizing: border-box;
       &.right {
         right: 0;
-        .title,
-        p {
-          text-align: right;
-          @include to(2) {
-            text-align: left;
-          }
-        }
-        .cta {
-          margin-left: auto;
-          @include to(2) {
-            margin-right: auto;
-          }
-        }
       }
       @include to(2) {
-        padding: 0 7vw 3vh;
+        padding: 5vh 2vw;
       }
     }
     .logo-content {
@@ -162,30 +158,19 @@ $cta: #007cf9;
     }
     .title {
       font-family: graphik, sans-serif;
-      font-style: normal;
+      font-size: 60px;
       font-weight: bold;
-      font-size: 51.3px;
+      font-stretch: normal;
+      font-style: normal;
       line-height: 1;
-
-      color: $accent;
+      color: $txt;
       padding: 6px;
-      margin-bottom: 30px;
-      span {
-        background-color: $txt;
-        box-decoration-break: clone;
-        background-clip: content-box;
-        font-variant-numeric: tabular-nums;
-      }
+      margin-bottom: 22px;
       strong {
-        color: #0050a2;
+        color: $accent;
       }
       @include to(2) {
-        font-size: 36px;
-        line-height: 40px;
-        margin-bottom: 20px;
-        span {
-          padding: 3px 10px;
-        }
+        font-size: 42px;
         br {
           display: none;
         }
@@ -195,40 +180,68 @@ $cta: #007cf9;
       font-family: graphik, sans-serif;
       font-style: normal;
       font-weight: normal;
-      font-size: 25.6px;
-      line-height: 34px;
-      color: $txt;
-      box-decoration-break: clone;
-      background-clip: content-box;
-      font-variant-numeric: tabular-nums;
+      letter-spacing: normal;
+      font-size: 20px;
+      line-height: 1.4;
+      color: $accent;
       @include to(2) {
-        font-size: 22px;
-        line-height: 30px;
+        font-size: 18px;
         br {
           display: none;
         }
       }
       strong {
-        color: $accent;
+        color: $cta;
         font-weight: 400;
       }
-      span {
-        color: #000;
+    }
+    .amounts {
+      max-width: 440px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 48px;
+      .amount {
+        cursor: pointer;
+        display: block;
         background-color: $txt;
-        padding: 5px 10px;
-        box-decoration-break: clone;
-      }
-      strong {
-        color: #0050a2;
+        color: $accent;
+        padding: 15px 40px;
+        display: flex;
+        flex-flow: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        height: 56px;
+        line-height: 1;
+        transition: 0.3s background-color ease, 0.3s color ease;
+        @include to(2) {
+          padding: 15px 10px;
+        }
+        &:hover {
+          color: $txt;
+          background-color: $accent;
+        }
+        &.amount_right {
+          flex-flow: row-reverse;
+        }
+        &.other_amount {
+          grid-column: auto / span 2;
+          background-color: rgba($txt, 0.5);
+          justify-content: flex-start;
+          &:hover {
+            background-color: $accent;
+          }
+        }
       }
     }
     .cta {
       font-weight: 700;
       padding: 12px 25px;
-      background-color: $accent;
+      background-color: $cta;
       color: $txt;
       display: block;
-      max-width: 250px;
+      max-width: 185px;
       font-style: normal;
       font-weight: bold;
       font-size: 26px;
@@ -260,7 +273,33 @@ $cta: #007cf9;
       left: 6vw;
       box-sizing: content-box;
       @include to(2) {
+        display: none;
+      }
+    }
+    .giving-tuesday-logo {
+      position: absolute;
+      bottom: 5vh;
+      right: calc(877px - 12vw);
+      box-sizing: content-box;
+      svg {
+        width: 227px;
+        height: 20px;
+      }
+      @include to(2) {
         bottom: 15px;
+      }
+    }
+    &.left {
+      .logo {
+        left: calc(650px + 6vw);
+      }
+      .giving-tuesday-logo {
+        right: auto;
+        left: calc(877px - 12vw);
+      }
+      .credits {
+        left: auto;
+        right: 6vw;
       }
     }
   }

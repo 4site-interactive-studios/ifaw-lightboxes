@@ -1,7 +1,7 @@
 // @import "reset";
 @import "breakpoint-sass";
 @import "breakpoint-slicer";
-$slicer-breakpoints: 0 400px 775px 1200px 1440px;
+$slicer-breakpoints: 0 400px 1000px 1200px 1440px;
 
 $bg: #ffab77;
 $txt: #fff;
@@ -15,8 +15,6 @@ $cta: #007cf9;
   bottom: 0;
   z-index: 2147483645;
   background-color: rgba(0, 0, 0, 0.65);
-  background-size: calc(100vw - 650px) auto;
-  background-repeat: no-repeat;
   width: 100vw;
   height: 100%;
   transition: top 0.4s ease-in-out;
@@ -33,7 +31,7 @@ $cta: #007cf9;
     top: 0;
     left: 0;
     bottom: 0;
-    width: calc(100vw - 650px);
+    width: 55vw;
     height: 100%;
     display: none;
     background-size: cover;
@@ -69,13 +67,13 @@ $cta: #007cf9;
     background-size: contain;
     background-repeat: no-repeat;
     @include to(2) {
-      top: 2vh;
+      top: calc(2vh + 10px);
     }
   }
 
   .button-close {
     position: absolute;
-    right: 7vw;
+    right: 3vw;
     top: 6vh;
     width: 60px;
     height: 60px;
@@ -86,6 +84,7 @@ $cta: #007cf9;
     z-index: 100;
     @include to(2) {
       top: 2vh;
+      right: 10px;
     }
     &:hover {
       transform: scale(1.5);
@@ -128,20 +127,23 @@ $cta: #007cf9;
 
     .container {
       position: absolute;
-      max-width: 690px;
-      padding: 10vh 5vw;
+      width: 45vw;
+      padding: clamp(90px, 10vh, 200px) 5vw;
       bottom: 0;
       top: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: stretch;
       background-color: $bg;
       box-sizing: border-box;
       &.right {
         right: 0;
       }
       @include to(2) {
-        padding: 5vh 2vw;
+        padding: 90px 2vw;
+        justify-content: flex-start;
+        width: 100%;
       }
     }
     .logo-content {
@@ -166,6 +168,7 @@ $cta: #007cf9;
       color: $txt;
       padding: 6px;
       margin-bottom: 22px;
+      max-width: 650px;
       strong {
         color: $accent;
       }
@@ -184,6 +187,7 @@ $cta: #007cf9;
       font-size: 20px;
       line-height: 1.4;
       color: $accent;
+      max-width: 650px;
       @include to(2) {
         font-size: 18px;
         br {
@@ -270,7 +274,7 @@ $cta: #007cf9;
       font-weight: 600;
       position: absolute;
       bottom: 5vh;
-      left: 6vw;
+      left: 3vw;
       box-sizing: content-box;
       @include to(2) {
         display: none;
@@ -278,28 +282,31 @@ $cta: #007cf9;
     }
     .giving-tuesday-logo {
       position: absolute;
-      bottom: 5vh;
-      right: calc(877px - 12vw);
+      bottom: 4vh;
+      right: calc(45vw + 30px);
       box-sizing: content-box;
       svg {
         width: 227px;
         height: 20px;
       }
       @include to(2) {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
         bottom: 15px;
       }
     }
     &.left {
       .logo {
-        left: calc(650px + 6vw);
+        left: 5vw;
       }
       .giving-tuesday-logo {
         right: auto;
-        left: calc(877px - 12vw);
+        left: calc(45vw + 30px);
       }
       .credits {
         left: auto;
-        right: 6vw;
+        right: 3vw;
       }
     }
   }

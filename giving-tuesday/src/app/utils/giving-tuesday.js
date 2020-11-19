@@ -19,7 +19,7 @@ import crumbs from "./crumbs";
  * cookie_ttl - Hours (number) to wait until showing the popup again
  *
  */
-export class Modal {
+export class GivingTuesday {
   constructor(options) {
     this.options = Object.assign(
       {
@@ -121,7 +121,7 @@ export class Modal {
       console.log("End", end);
       console.log("Now", now);
     }
-    return now >= start || now <= end;
+    return now >= start && now <= end;
   }
   open() {
     let hideSplash = crumbs.get("hideSplash"); // Get cookie
@@ -138,12 +138,13 @@ export class Modal {
   }
   getAmounts() {
     let ret = "";
-    this.options.amounts.forEach(
-      (e) =>
-        (ret =
-          ret +
-          `<a class="amount amount_${this.options.currency_position}" target="_blank" href="${this.options.donation_link}?amount=${e}"><span class="currency">${this.options.currency}</span><span class="amount_value">${e}</span></a>`)
-    );
+    this.options.amounts.forEach((e) => {
+      let url = new URL(this.options.donation_link);
+      url.searchParams.set("amount", e);
+      ret =
+        ret +
+        `<a class="amount amount_${this.options.currency_position}" target="_blank" href="${url}"><span class="currency">${this.options.currency}</span><span class="amount_value">${e}</span></a>`;
+    });
     ret += `<a class="amount other_amount" target="_blank" href="${this.options.donation_link}"><span>${this.options.other_label}</span></a>`;
     return ret;
   }

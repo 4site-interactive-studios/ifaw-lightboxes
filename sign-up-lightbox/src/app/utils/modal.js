@@ -40,6 +40,11 @@ export class Modal {
       // If we're not between the running dates, get out
       return false;
     }
+    // Create a cookie with value as 0 if script can run
+    crumbs.set(this.options.cookie_name, 0, {
+      type: "day",
+      value: 1,
+    });
     const markup = `
     <div class="ifawModal-container">
         <a href="#" class="button-close"></a>
@@ -382,7 +387,7 @@ export class Modal {
   // Should we run the script?
   shouldRun() {
     console.log(this.options);
-    let hideSignUpForm = crumbs.get(this.options.cookie_name); // Get cookie
+    let hideSignUpForm = !!parseInt(crumbs.get(this.options.cookie_name)); // Get cookie
     return (
       !hideSignUpForm &&
       !this.isBlacklisted() &&

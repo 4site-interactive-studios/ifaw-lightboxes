@@ -1,4 +1,4 @@
-import { run } from "./app/app";
+import { GivingTuesday } from "./app/utils/giving-tuesday";
 import "./scss/main.scss";
 
-run();
+window.GivingTuesday = GivingTuesday;

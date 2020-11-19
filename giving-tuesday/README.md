@@ -8,21 +8,30 @@ Add the code below to the page you want to use the Giving Tuesday Lightbox:
 
 ```html
 <script>
-  var modal = {
-    title: "help save baby animals <strong>this #givingtuesday</strong>",
-    paragraph:
-      "Make a gift to help IFAW teams rescue and rehabilitate the most vulnerable animals -- including baby elephants, koalas and rhinos!",
-    cta_label: "give now",
-    donation_link:
-      "https://secure.ifaw.org/united-states/save-wildlife-australia-bushfires",
-    background:
-      "https://ifaw-4site.s3.us-east-1.amazonaws.com/giving-tuesday/jaguars.jpg",
-    background_credit: "Photo © Alejandro Prieto",
-  };
   var script = document.createElement("script");
   script.type = "text/javascript";
   script.src =
     "https://ifaw-4site.s3.us-east-1.amazonaws.com/giving-tuesday/dist/main.js";
+  script.onload = function() {
+    var options = {
+      title: "help save baby animals <strong>this #GivingTuesday </strong>",
+      paragraph:
+        "Make a gift to help IFAW teams rescue and rehabilitate the most vulnerable animals — including baby elephants, koalas, and jaguars!",
+      cta_label: "donate now",
+      amounts: [50, 100, 250, 500],
+      donation_link:
+        "https://secure.ifaw.org/united-states/save-wildlife-australia-bushfires?a=b",
+      start_date: "11/01/2020",
+      end_date: "11/30/2020",
+      currency_position: "right",
+      background:
+        "https://ifaw-4site.s3.us-east-1.amazonaws.com/giving-tuesday/jaguars.jpg",
+      background_credit: "Photo © Alejandro Prieto",
+      align: "right",
+      debug: true, // If true, ignore cookie and always opens the modal
+    };
+    new GivingTuesday(options);
+  };
   document.querySelector("head").appendChild(script);
 </script>
 ```

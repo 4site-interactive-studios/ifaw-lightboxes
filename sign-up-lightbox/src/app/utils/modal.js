@@ -551,7 +551,7 @@ export class Modal {
     if (this.options.dates.length) {
       let now = new Date();
       let start = new Date(this.options.dates[0]);
-      let end = new Date(this.options.dates[1]);
+      let end = new Date(this.options.dates[1] + " 23:59:59");
       if (now < start || now > end) {
         ret = false;
       }

@@ -33,10 +33,12 @@ export class GivingTuesday {
         donation_link: "",
         start_date: "",
         end_date: "",
+        blacklist: [],
+        whitelist: [],
         background: "",
         background_credit: "",
         align: "right",
-        cookie_ttl: 4,
+        cookie_ttl: 1,
         debug: false,
       },
       options
@@ -45,6 +47,11 @@ export class GivingTuesday {
       // If we're not between the running dates, get out
       return false;
     }
+    // Create a cookie with value as 0 if script can run
+    crumbs.set("hideSplash", 0, {
+      type: "hour",
+      value: 1,
+    });
     const markup = `
     <div class="desktop_bg ${
       this.options.align
@@ -110,7 +117,18 @@ export class GivingTuesday {
     document.body.appendChild(overlay);
     window.setTimeout(this.open.bind(this), 500); //Delay before opening splash screen
   }
+  // Should we run the script?
   shouldRun() {
+    let hidePopup = !!parseInt(crumbs.get("hideSplash")); // Get cookie
+    return (
+      !hidePopup &&
+      !this.isBlacklisted() &&
+      this.isWhitelisted() &&
+      this.isBetweenDates()
+    );
+  }
+  isBetweenDates() {
+    var ret = false;
     let start = new Date(this.options.start_date);
     let end = new Date(this.options.end_date);
     start.setHours(0, 0, 0);
@@ -121,13 +139,38 @@ export class GivingTuesday {
       console.log("End", end);
       console.log("Now", now);
     }
-    return now >= start && now <= end;
+    ret = now >= start && now <= end;
+    console.log("Is betwen Dates?", ret);
+    return ret;
+  }
+  isWhitelisted() {
+    var ret = true;
+    if (this.options.whitelist.length) {
+      var url = window.location.pathname;
+      // Change the default since now we need to show ONLY in whitelisted places
+      ret = false;
+      this.options.whitelist.forEach((test) => {
+        console.log("Checking Whitelist", test);
+        if (url.match(new RegExp(test))) ret = true;
+      });
+    }
+    console.log("Is Whitelisted?", ret);
+    return ret;
+  }
+  isBlacklisted() {
+    var ret = false;
+    if (this.options.blacklist.length) {
+      var url = window.location.pathname;
+      this.options.blacklist.forEach((test) => {
+        console.log("Checking Blacklist", test);
+        if (url.match(new RegExp(test))) ret = true;
+      });
+    }
+    console.log("Is Blacklisted?", ret);
+    return ret;
   }
   open() {
-    let hideSplash = crumbs.get("hideSplash"); // Get cookie
-    if (!hideSplash || this.options.debug) {
-      this.overlay.classList.remove("is-hidden");
-    }
+    this.overlay.classList.remove("is-hidden");
   }
   close(e) {
     crumbs.set("hideSplash", 1, {

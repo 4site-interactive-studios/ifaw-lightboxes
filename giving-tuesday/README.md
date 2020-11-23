@@ -53,6 +53,8 @@ The var `modal` above is where you put all the options for the Lightbox.
 - **align** - (left|right) - Container's alignment
 - **start_date** - (mm/dd/YYYY) Date to Start the Campaign
 - **end_date** - (mm/dd/YYYY) Date to end the Campaign
+- **whitelist** - Valid regex that does not use "(" or ")". If none are specified, then all pages are considered whitelisted.
+- **blacklist** - Valid regex that does not use "(" or ")". If none are specified, then no pages are considered blacklisted.
 - **cookie_ttl** - Hours (number) to wait until showing the popup again
 
 ## Development

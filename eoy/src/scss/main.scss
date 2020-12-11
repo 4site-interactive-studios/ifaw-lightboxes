@@ -1,0 +1,293 @@
+// @import "reset";
+@import "breakpoint-sass";
+@import "breakpoint-slicer";
+$slicer-breakpoints: 0 400px 1000px 1200px 1440px;
+
+$bg: #ffab77;
+$txt: #fff;
+$accent: #000;
+$cta: #007cf9;
+
+#ifawEOY {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 2147483645;
+  background-color: rgba(0, 0, 0, 0.65);
+  width: 100vw;
+  height: 100%;
+  transition: top 0.4s ease-in-out;
+  overflow: hidden;
+  @include to(2) {
+    align-items: flex-end;
+  }
+  &.is-hidden {
+    top: -100vh;
+  }
+
+  .desktop_bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 55vw;
+    height: 100%;
+    display: none;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+    &.left {
+      left: auto;
+      right: 0;
+    }
+    @include to(2) {
+      display: none;
+    }
+  }
+
+  .desktop_bg {
+    @include from(3) {
+      display: block;
+    }
+  }
+
+  .logo {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    text-indent: -999999em;
+    overflow: hidden;
+    top: 6vh;
+    left: 4vw;
+    width: 116px;
+    height: 60px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="117" height="60" fill="none" viewBox="0 0 117 60"><g fill-rule="evenodd" clip-path="url(%23clip0)" clip-rule="evenodd"><path fill="%23fff" d="M.542 45.522h10.772V14.237H.542v31.285zm5.356-34.276c3.37 0 5.957-2.333 5.957-5.504 0-3.17-2.587-5.563-5.957-5.563C2.528.18 0 2.573 0 5.742c0 3.17 2.528 5.503 5.898 5.503zm12.19 34.276h10.713V21.534h6.378v-7.297H28.8v-2.751c0-2.034 1.082-3.41 3.61-3.41 1.204 0 2.166.18 2.948.418V.66C33.915.299 32.41 0 30.425 0c-7.462 0-12.336 3.71-12.336 11.485v2.752h-3.972v7.297h3.972v23.988zm28.343.717c5.055 0 7.822-2.092 9.328-4.366v3.649h10.47V25.244c0-8.316-5.536-11.845-14.201-11.845-8.606 0-14.563 3.71-15.044 11.246h10.11c.24-1.974 1.322-3.708 4.271-3.708 3.43 0 4.153 1.974 4.153 4.964v.718h-3.009c-10.47 0-16.73 2.872-16.73 10.23 0 6.64 4.995 9.39 10.652 9.39zm3.731-7.237c-2.527 0-3.73-1.136-3.73-2.932 0-2.572 1.924-3.41 6.257-3.41h2.829v1.915c0 2.692-2.287 4.426-5.356 4.426zm25.7 6.52h10.472l4.873-17.467 4.695 17.467h10.289l9.99-31.285h-10.23l-5.115 18.723-4.694-18.723h-8.666L82.181 32.96l-4.573-18.723H66.354l9.509 31.285z"/><path fill="%23FFAB77" d="M37.5 59.798h29.203V52.5H37.5v7.298z"/></g><defs><clipPath id="clip0"><path fill="%23fff" d="M0 0H116.786V60H0z"/></clipPath></defs></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    @include to(2) {
+      top: calc(2vh + 10px);
+    }
+  }
+
+  .button-close {
+    position: absolute;
+    right: 3vw;
+    top: 6vh;
+    width: 60px;
+    height: 60px;
+    transition: 0.3s transform ease-in-out;
+    background-color: $bg;
+    padding: 10px;
+    border-radius: 50%;
+    z-index: 100;
+    @include to(2) {
+      top: 2vh;
+      right: 10px;
+    }
+    &:hover {
+      transform: scale(1.5);
+    }
+    &::before,
+    &::after {
+      position: absolute;
+      left: 28px;
+      top: 12px;
+      content: " ";
+      height: 35px;
+      width: 5px;
+      background-color: $txt;
+    }
+    &::before {
+      transform: rotate(45deg);
+    }
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+  .ifawEOY-container {
+    color: $txt;
+    font-family: graphik, sans-serif;
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 700;
+    z-index: 1;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      215.69deg,
+      rgba(0, 0, 0, 0) 29.79%,
+      rgba(0, 0, 0, 0.7) 99.44%
+    );
+
+    .container {
+      position: absolute;
+      width: 45vw;
+      padding: clamp(90px, 10vh, 200px) 5vw;
+      bottom: 0;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      background-color: $bg;
+      box-sizing: border-box;
+      &.right {
+        right: 0;
+      }
+      @include to(2) {
+        padding: 90px 2vw;
+        justify-content: flex-start;
+        width: 100%;
+      }
+    }
+    .logo-content {
+      display: block;
+      max-width: 200px;
+      margin-left: auto;
+      height: auto;
+      margin-bottom: 30px;
+      @include to(2) {
+        margin-right: auto;
+        max-width: 100px;
+        margin-bottom: 20px;
+      }
+    }
+    .title {
+      font-family: graphik, sans-serif;
+      font-size: 60px;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1;
+      color: $txt;
+      padding: 6px;
+      margin-bottom: 22px;
+      max-width: 650px;
+      strong {
+        color: $accent;
+      }
+      @include to(2) {
+        font-size: 42px;
+        br {
+          display: none;
+        }
+      }
+    }
+    p {
+      font-family: graphik, sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      letter-spacing: normal;
+      font-size: 20px;
+      line-height: 1.4;
+      color: $accent;
+      max-width: 650px;
+      @include to(2) {
+        font-size: 18px;
+        br {
+          display: none;
+        }
+      }
+      strong {
+        font-weight: 700;
+      }
+    }
+    .amounts {
+      max-width: 440px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 48px;
+      .amount {
+        cursor: pointer;
+        display: block;
+        background-color: $txt;
+        color: $accent;
+        padding: 15px 40px;
+        display: flex;
+        flex-flow: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        height: 56px;
+        line-height: 1;
+        transition: 0.3s background-color ease, 0.3s color ease;
+        @include to(2) {
+          padding: 15px 10px;
+        }
+        &:hover {
+          color: $txt;
+          background-color: $accent;
+        }
+        &.amount_right {
+          flex-flow: row-reverse;
+        }
+        &.other_amount {
+          grid-column: auto / span 2;
+          background-color: rgba($txt, 0.5);
+          justify-content: flex-start;
+          &:hover {
+            background-color: $accent;
+          }
+        }
+      }
+    }
+    .cta {
+      font-weight: 700;
+      padding: 12px 25px;
+      background-color: $cta;
+      color: $txt;
+      display: block;
+      max-width: 185px;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 26px;
+      line-height: 28px;
+      text-align: center;
+      color: #ffffff;
+      margin-top: 35px;
+      opacity: 1;
+      transition: 0.3s background-color ease-in-out, 0.3s color ease-in-out;
+      box-sizing: content-box;
+      @include to(2) {
+        margin-bottom: 25px;
+      }
+      @include to(2) {
+        font-size: 22px;
+        padding: 10px 20px;
+        max-width: 200px;
+      }
+      &:hover {
+        background-color: $txt;
+        color: $accent;
+      }
+    }
+    .credits {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 600;
+      position: absolute;
+      bottom: 5vh;
+      left: 3vw;
+      box-sizing: content-box;
+      @include to(2) {
+        display: none;
+      }
+    }
+    &.left {
+      .logo {
+        left: 5vw;
+      }
+      .credits {
+        left: auto;
+        right: 3vw;
+      }
+    }
+  }
+}

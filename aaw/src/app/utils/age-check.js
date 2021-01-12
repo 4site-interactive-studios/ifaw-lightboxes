@@ -5,16 +5,14 @@ export class AgeCheck {
       {
         age: 18,
         urls: [],
-        debug: false
+        debug: false,
       },
       options
     );
     this.url = window.location.href.split("?")[0];
     if (!this.shouldRun()) return false;
     if (this.isLandingPage()) {
-      const AgeGate = crumbs.get("AgeGate"); // Get age cookie
-      const underAge =
-        AgeGate == null || AgeGate >= this.options.age ? false : true;
+      const underAge = false;
       // Get the Page's Point of Insertion
       let content = document.getElementById("app-root").querySelector("h6");
       // Create a new Container
@@ -68,7 +66,7 @@ export class AgeCheck {
     } else if (this.isLegalPage()) {
       let legalBtn = document.getElementById("legalizeSubmit");
       if (legalBtn) {
-        legalBtn.addEventListener("click", event => {
+        legalBtn.addEventListener("click", (event) => {
           let legalize = document.getElementById("legalize");
           if (legalize && legalize.checked) {
             document.cookie = `LegalGate=1;path=/;domain=ifaw.org`;
@@ -92,7 +90,7 @@ export class AgeCheck {
       "September",
       "October",
       "November",
-      "December"
+      "December",
     ];
     let selectMonth = document.getElementById("month");
     for (var m = 0; m < 12; m++) {
@@ -182,7 +180,7 @@ export class AgeCheck {
       let message = document.getElementById("ageMessage");
       message.classList.add("error");
       message.innerHTML =
-        "Sorry! You are not eligible to enter an artist into this year’s contest";
+        "Sorry! There was an error while trying to submit in this year's contest. Please make sure to enter guardian's birthday or artist's birthday if 18 years old.";
       // Delete Form
       document.getElementById("age-form").remove();
     } else {

@@ -38,7 +38,7 @@ export class EOY {
         background: "",
         background_credit: "",
         align: "right",
-        cookie_ttl: 1,
+        cookie_ttl: 24,
         debug: false,
       },
       options

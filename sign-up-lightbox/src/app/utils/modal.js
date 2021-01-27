@@ -489,13 +489,13 @@ export class Modal {
     const self = this;
     axios.get("https://api.ifaw.org/api/funnel/signup").then((response) => {
       axios(options)
-        .then(function (response) {
+        .then(function(response) {
           if ("result" in response.data && response.data.result == "success") {
             self.success();
           }
           console.log(response);
         })
-        .catch(function (response) {
+        .catch(function(response) {
           //handle error
           button.classList.remove("loading");
           alert("Error while subscribring. Please check your e-mail address.");

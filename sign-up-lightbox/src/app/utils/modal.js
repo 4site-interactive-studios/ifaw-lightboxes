@@ -5,11 +5,7 @@ export class Modal {
     const footer_form = document.querySelector("footer form");
     const lang = document.documentElement.lang;
     window.dataLayer = window.dataLayer || [];
-    this.overlayID =
-      "ifaw-" +
-      Math.random()
-        .toString(36)
-        .substring(7);
+    this.overlayID = "ifaw-" + Math.random().toString(36).substring(7);
     this.options = {
       cookie_name: "hideSignUpForm",
       heading_top: "",
@@ -33,6 +29,8 @@ export class Modal {
       double_opt_in_required: "0",
       source: "lightbox",
       mode: "big", // big, small-single, small-multi
+      trigger: 0, // int-seconds, px-scroll location, %-scroll location, exit-mouse leave
+      triggered: false,
     };
     this.loadTranslation(lang);
     this.options = Object.assign(this.options, options);
@@ -377,7 +375,26 @@ export class Modal {
 
     this.overlay = overlay;
     document.body.appendChild(overlay);
-    window.setTimeout(this.open.bind(this), 2000);
+    const triggerType = this.getTriggerType(this.options.trigger);
+    console.log("Trigger type: ", triggerType);
+    if (triggerType === false) {
+      this.options.trigger = 2000;
+    }
+    if (triggerType === "seconds") {
+      this.options.trigger = Number(this.options.trigger) * 1000;
+    }
+    if (triggerType === "seconds" || triggerType === false) {
+      window.setTimeout(this.open.bind(this), this.options.trigger);
+    }
+    if (triggerType === "exit") {
+      document.addEventListener("mouseleave", this.open.bind(this));
+    }
+    if (triggerType === "pixels") {
+      document.addEventListener("scroll", this.scrollTriggerPx.bind(this), true);
+    }
+    if (triggerType === "percent"){
+      document.addEventListener("scroll", this.scrollTriggerPercent.bind(this), true);
+    }
   }
   open() {
     window.dataLayer.push({ event: "lightbox_display" });
@@ -472,13 +489,13 @@ export class Modal {
     const self = this;
     axios.get("https://api.ifaw.org/api/funnel/signup").then((response) => {
       axios(options)
-        .then(function(response) {
+        .then(function (response) {
           if ("result" in response.data && response.data.result == "success") {
             self.success();
           }
           console.log(response);
         })
-        .catch(function(response) {
+        .catch(function (response) {
           //handle error
           button.classList.remove("loading");
           alert("Error while subscribring. Please check your e-mail address.");
@@ -642,6 +659,43 @@ export class Modal {
         this.options.paragraph =
           "stay up to date on the animals and issues you care about the most. You can unsubscribe at any time";
         this.options.button_label = "Subscribe";
+    }
+  }
+  getTriggerType(trigger) {
+    /**
+     * Any integer (e.g., 5) -> Number of seconds to wait before triggering the lightbox
+     * Any pixel (e.g.: 100px) -> Number of pixels to scroll before trigger the lightbox
+     * Any percentage (e.g., 30%) -> Percentage of the height of the page to scroll before triggering the lightbox
+     * The word exit -> Triggers the lightbox when the mouse leaves the DOM area (exit intent).
+     * With 0 as default, the lightbox will trigger as soon as the page finishes loading.
+     */
+    console.log("Trigger Value: ", trigger);
+
+    if (!isNaN(trigger)) {
+      return "seconds";
+    } else if (trigger.includes("px")) {
+      return "pixels";
+    } else if (trigger.includes("%")) {
+      return "percent";
+    } else if (trigger.includes("exit")) {
+      return "exit";
+    } else {
+      return false;
+    }
+  }
+  scrollTriggerPx(e) {
+    const triggerValue = Number(this.options.trigger.replace("px", ""));
+    if (window.scrollY >= triggerValue && !this.options.triggered) {
+      this.open();
+      this.options.triggered = true;
+    }
+  }
+  scrollTriggerPercent(e) {
+    const triggerValue = Number(this.options.trigger.replace("%", ""));
+    const target = (triggerValue / 100) * document.documentElement.clientHeight;
+    if (window.scrollY >= target && !this.options.triggered) {
+      this.open();
+      this.options.triggered = true;
     }
   }
 }

@@ -30,8 +30,8 @@ export class Modal {
       source: "lightbox",
       mode: "big", // big, small-single, small-multi
       trigger: 0, // int-seconds, px-scroll location, %-scroll location, exit-mouse leave
-      triggered: false,
     };
+    this.triggered = false;
     this.loadTranslation(lang);
     this.options = Object.assign(this.options, options);
     if (!this.shouldRun()) {
@@ -685,17 +685,17 @@ export class Modal {
   }
   scrollTriggerPx(e) {
     const triggerValue = Number(this.options.trigger.replace("px", ""));
-    if (window.scrollY >= triggerValue && !this.options.triggered) {
+    if (window.scrollY >= triggerValue && !this.triggered) {
       this.open();
-      this.options.triggered = true;
+      this.triggered = true;
     }
   }
   scrollTriggerPercent(e) {
     const triggerValue = Number(this.options.trigger.replace("%", ""));
     const target = ((triggerValue / 100) * document.documentElement.clientHeight) * 0.5;
-    if (window.scrollY >= target && !this.options.triggered) {
+    if (window.scrollY >= target && !this.triggered) {
       this.open();
-      this.options.triggered = true;
+      this.triggered = true;
     }
   }
 }

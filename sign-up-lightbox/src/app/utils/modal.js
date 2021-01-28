@@ -387,7 +387,14 @@ export class Modal {
       window.setTimeout(this.open.bind(this), this.options.trigger);
     }
     if (triggerType === "exit") {
-      document.addEventListener("mouseleave", this.open.bind(this));
+      document.body.addEventListener("mousemove", e=> {
+        
+        let target = document.getElementsByTagName('header')[0].clientHeight;
+        if(e.y < target && !this.triggered){
+          this.open();
+          this.triggered = true;
+        }
+      });
     }
     if (triggerType === "pixels") {
       document.addEventListener("scroll", this.scrollTriggerPx.bind(this), true);

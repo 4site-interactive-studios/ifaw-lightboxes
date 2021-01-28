@@ -387,10 +387,8 @@ export class Modal {
       window.setTimeout(this.open.bind(this), this.options.trigger);
     }
     if (triggerType === "exit") {
-      document.body.addEventListener("mousemove", e=> {
-        
-        let target = document.getElementsByTagName('header')[0].clientHeight;
-        if(e.y < target && !this.triggered){
+      document.body.addEventListener("mouseout", e=> {
+        if(e.clientY < 0 && !this.triggered){
           this.open();
           this.triggered = true;
         }

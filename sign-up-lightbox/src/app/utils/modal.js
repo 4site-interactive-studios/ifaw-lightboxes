@@ -692,7 +692,7 @@ export class Modal {
   }
   scrollTriggerPercent(e) {
     const triggerValue = Number(this.options.trigger.replace("%", ""));
-    const target = (triggerValue / 100) * document.documentElement.clientHeight;
+    const target = ((triggerValue / 100) * document.documentElement.clientHeight) * 0.5;
     if (window.scrollY >= target && !this.options.triggered) {
       this.open();
       this.options.triggered = true;

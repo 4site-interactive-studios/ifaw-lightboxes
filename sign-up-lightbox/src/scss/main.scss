@@ -19,8 +19,8 @@ $cta: #007cf9;
 .ifawModal {
   .button-close {
     position: absolute;
-    right: -32px;
-    top: -32px;
+    right: 10px;
+    top: 10px;
     width: 25px;
     height: 25px;
     transition: 0.3s transform ease-in-out;
@@ -38,7 +38,7 @@ $cta: #007cf9;
       content: " ";
       height: 19px;
       width: 3px;
-      background-color: $bg;
+      background-color: $txt;
       left: 10px;
       top: 2px;
       @include to(2) {

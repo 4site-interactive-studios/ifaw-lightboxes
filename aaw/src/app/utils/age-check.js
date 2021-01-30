@@ -180,7 +180,7 @@ export class AgeCheck {
       let message = document.getElementById("ageMessage");
       message.classList.add("error");
       message.innerHTML =
-        "Sorry! There was an error while trying to submit in this year's contest. Please make sure to enter guardian's birthday or artist's birthday if 18 years old.";
+        "Sorry! There was an error while trying to submit in this year's contest. Please make sure to enter guardian's birthday or artist's birthday if 18 years old.<br> <a href='javascript:window.location.reload(true)'>Start Over</a>";
       // Delete Form
       document.getElementById("age-form").remove();
     } else {

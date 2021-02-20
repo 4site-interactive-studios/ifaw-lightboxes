@@ -335,7 +335,7 @@ $cta: #007cf9;
       .subtitle,
       h2.success {
         font-size: 44px;
-        text-transform: lowercase;
+        text-transform: initial;
         max-width: 305px;
         @include to(2) {
           font-size: 28px;

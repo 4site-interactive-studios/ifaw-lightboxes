@@ -1,9 +1,13 @@
-import crumbs from "./crumbs";
-import axios from "./axios";
+import { crumbs } from "./crumbs";
+
+const axios = require("axios");
+
+const crossDomainCookie = "https://cds.ifaw.org/cross-domain.js";
+const crossDomainCookieName = "IfawSignedUp";
 export class Modal {
   constructor(options) {
     const footer_form = document.querySelector("footer form");
-    const lang = document.documentElement.lang;
+    this.lang = document.documentElement.lang;
     window.dataLayer = window.dataLayer || [];
     this.overlayID =
       "ifaw-" +
@@ -36,141 +40,154 @@ export class Modal {
       trigger: 0, // int-seconds, px-scroll location, %-scroll location, exit-mouse leave
     };
     this.triggered = false;
-    this.loadTranslation(lang);
+    this.loadTranslation(this.lang);
     this.options = Object.assign(this.options, options);
-    if (!this.shouldRun()) {
-      // If we're not between the running dates, get out
-      return false;
-    }
-    // Create a cookie with value as 0 if script can run
-    crumbs.set(this.options.cookie_name, 0, {
-      type: "day",
-      value: 1,
-    });
-    const markup = `
-    <div class="ifawModal-container">
-        <a href="#" class="button-close"></a>
-        <div class="content">
-          <div class="left">
-            <h2 class="title">${this.options.heading_top}</h2>
-            <h2 class="success">${this.options.success_top}</h2>
+    this.init();
+  }
+  async init() {
+    this.loadScript(crossDomainCookie, async () => {
+      let domain = new URL(crossDomainCookie);
+      this.cds = new CrossDomainStorage(domain.origin, "/");
+      let shouldRun = await this.shouldRun();
+      console.log("Should Run?", shouldRun);
+      if (shouldRun) {
+        // Create a cookie with value as 0 if script can run
+        crumbs.set(this.options.cookie_name, 0, {
+          type: "day",
+          value: 1,
+        });
+        const markup = `
+            <div class="ifawModal-container">
+                <a href="#" class="button-close"></a>
+                <div class="content">
+                  <div class="left">
+                    <h2 class="title">${this.options.heading_top}</h2>
+                    <h2 class="success">${this.options.success_top}</h2>
 
-            <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="367" height="194" viewBox="0 0 367 194">
-                <g fill="#007EFF">
-                    <path d="M10 41L36 41 23 3z" transform="translate(-6.29 -11.152) rotate(-58 23 22)"/>
-                    <path d="M181.45 209.012L207.45 209.012 194.45 171.012z" transform="translate(-6.29 -11.152) rotate(-141 194.45 190.012)"/>
-                    <path d="M20.48 28.772l3.619-8.24 12.052 5.29c95.447 41.853 167.616 72.638 216.33 92.293l2.348.945 2.936-3c23.389-23.82 39.317-37.986 48.007-42.667l.456-.241c16.877-8.694 33.241-7.723 46.116 1.533 11.448 8.232 18.895 22.348 19.934 37.152 1.056 15.045-5.078 27.237-16.415 34.59-10.231 6.637-23.846 8.657-36.62 5.602l-.942-.232c-10.02-2.535-29.105-9.39-57.297-20.58l-3.909-1.557-3.273 3.398c-14.96 15.582-32.579 34.567-52.807 56.918l-2.886 3.193-6.68-6.033 5.36-5.922c19.422-21.425 36.368-39.673 50.879-54.773l.387-.404-5.517-2.233c-48.394-19.656-117.742-49.285-208.192-88.938l-13.887-6.094zm326.61 53.22c-10.086-7.251-22.827-8.007-36.74-.84-7.504 3.866-22.472 17.162-44.693 39.726l-1.772 1.804 5.81 2.3c24.88 9.794 41.838 15.831 50.842 18.098l.799.196c10.447 2.498 21.532.853 29.63-4.399 8.6-5.579 13.16-14.643 12.334-26.41-.857-12.208-7-23.852-16.21-30.474z" transform="translate(-6.29 -11.152)"/>
-                </g>
-            </svg>
-            <h2 class="subtitle">${this.options.heading_bottom}</h2>
-            <p class="success">${this.options.success_bottom}</p>
-            <svg class="logo" xmlns="http://www.w3.org/2000/svg" width="90" height="46" viewBox="0 0 90 46">
-                <g fill="none" fill-rule="evenodd">
-                    <path fill="#000" d="M.415 34.9h8.26V10.915H.414V34.9zM4.522 8.622c2.583 0 4.567-1.789 4.567-4.22 0-2.43-1.984-4.264-4.567-4.264C1.938.138 0 1.972 0 4.402c0 2.431 1.938 4.22 4.522 4.22zM13.868 34.9h8.213V16.51h4.89v-5.595h-4.89v-2.11c0-1.559.83-2.613 2.767-2.613.923 0 1.661.137 2.26.32V.505C26.003.23 24.849 0 23.327 0c-5.721 0-9.458 2.844-9.458 8.805v2.11h-3.045v5.595h3.045V34.9zm21.73.55c3.874 0 5.996-1.604 7.15-3.347V34.9h8.027V19.354c0-6.376-4.244-9.082-10.887-9.082-6.598 0-11.165 2.844-11.534 8.623h7.751c.185-1.514 1.014-2.844 3.275-2.844 2.63 0 3.184 1.514 3.184 3.806v.551h-2.307c-8.027 0-12.826 2.202-12.826 7.842 0 5.091 3.83 7.2 8.166 7.2zm2.86-5.549c-1.938 0-2.86-.87-2.86-2.247 0-1.972 1.475-2.614 4.797-2.614h2.169v1.468c0 2.063-1.754 3.393-4.106 3.393zm19.703 5h8.028l3.736-13.392 3.6 13.391h7.888l7.659-23.985h-7.843L77.307 25.27 73.71 10.915h-6.644l-4.06 14.355L59.5 10.915h-8.627l7.29 23.985z"/>
-                    <path fill="#007DFA" d="M28.75 45.845L51.139 45.845 51.139 40.25 28.75 40.25z"/>
-                </g>
-            </svg>
-          </div>
-          <div class="right">
-            <h2 class="small-title">${this.options.heading_top}</h2>
-            <h2 class="small-success success">${this.options.success_top}</h2>
-            <p class="form-desc">
-              ${this.options.paragraph}
-            </p>
-            <form id="sign-up-form">
-              <div class="group">      
-                <input type="text" name="first_name" autocomplete="given-name" required>
-                <label>${this.options.first_name}</label>
-              </div>
-              <div class="group">      
-                <input type="text" name="last_name" autocomplete="family-name" required>
-                <label>${this.options.last_name}</label>
-              </div>
-              <div class="group">      
-                <input type="email" name="email" autocomplete="email" required>
-                <label>${this.options.email}</label>
-              </div>
-              <div class="group">      
-                <select name="country" autocomplete="country">
-                  ${this.loadCountries()}
-                </select>
-              </div>
-              <div class="submit">
-                <button class="cta" type="button"><span>${
-                  this.options.button_label
-                }</span></button>
-              </div>
-            </form>
-            <h2 class="small-subtitle">${this.options.heading_bottom}</h2>
-            <p class="small-success success">${this.options.success_bottom}</p>
-          </div>
-        </div>
-    </div>
-    `;
-    let overlay = document.createElement("div");
-    overlay.id = this.overlayID;
-    overlay.classList.add("is-hidden");
-    overlay.classList.add(lang);
-    overlay.classList.add(this.options.mode);
-    overlay.classList.add("ifawModal");
-    overlay.innerHTML = markup;
-    const closeButton = overlay.querySelector(".button-close");
-    closeButton.addEventListener("click", this.close.bind(this));
-    overlay.addEventListener("click", (e) => {
-      if (e.target.id == this.overlayID) {
-        this.close(e);
-      }
-    });
-    document.addEventListener("keyup", (e) => {
-      if (e.key === "Escape") {
-        closeButton.click();
-      }
-    });
-    // Select the current country
-    const country = document.documentElement.lang.split("-");
-    const countrySelect = overlay.querySelector("select");
-    if (1 in country) {
-      countrySelect.value = country[1];
-    }
-    // Submit the Form
-    const formBtn = overlay.querySelector("form button.cta");
-    formBtn.addEventListener("click", this.submit.bind(this));
-
-    this.overlay = overlay;
-    document.body.appendChild(overlay);
-    const triggerType = this.getTriggerType(this.options.trigger);
-    console.log("Trigger type: ", triggerType);
-    if (triggerType === false) {
-      this.options.trigger = 2000;
-    }
-    if (triggerType === "seconds") {
-      this.options.trigger = Number(this.options.trigger) * 1000;
-    }
-    if (triggerType === "seconds" || triggerType === false) {
-      window.setTimeout(this.open.bind(this), this.options.trigger);
-    }
-    if (triggerType === "exit") {
-      document.body.addEventListener("mouseout", (e) => {
-        if (e.clientY < 0 && !this.triggered) {
-          this.open();
-          this.triggered = true;
+                    <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="367" height="194" viewBox="0 0 367 194">
+                        <g fill="#007EFF">
+                            <path d="M10 41L36 41 23 3z" transform="translate(-6.29 -11.152) rotate(-58 23 22)"/>
+                            <path d="M181.45 209.012L207.45 209.012 194.45 171.012z" transform="translate(-6.29 -11.152) rotate(-141 194.45 190.012)"/>
+                            <path d="M20.48 28.772l3.619-8.24 12.052 5.29c95.447 41.853 167.616 72.638 216.33 92.293l2.348.945 2.936-3c23.389-23.82 39.317-37.986 48.007-42.667l.456-.241c16.877-8.694 33.241-7.723 46.116 1.533 11.448 8.232 18.895 22.348 19.934 37.152 1.056 15.045-5.078 27.237-16.415 34.59-10.231 6.637-23.846 8.657-36.62 5.602l-.942-.232c-10.02-2.535-29.105-9.39-57.297-20.58l-3.909-1.557-3.273 3.398c-14.96 15.582-32.579 34.567-52.807 56.918l-2.886 3.193-6.68-6.033 5.36-5.922c19.422-21.425 36.368-39.673 50.879-54.773l.387-.404-5.517-2.233c-48.394-19.656-117.742-49.285-208.192-88.938l-13.887-6.094zm326.61 53.22c-10.086-7.251-22.827-8.007-36.74-.84-7.504 3.866-22.472 17.162-44.693 39.726l-1.772 1.804 5.81 2.3c24.88 9.794 41.838 15.831 50.842 18.098l.799.196c10.447 2.498 21.532.853 29.63-4.399 8.6-5.579 13.16-14.643 12.334-26.41-.857-12.208-7-23.852-16.21-30.474z" transform="translate(-6.29 -11.152)"/>
+                        </g>
+                    </svg>
+                    <h2 class="subtitle">${this.options.heading_bottom}</h2>
+                    <p class="success">${this.options.success_bottom}</p>
+                    <svg class="logo" xmlns="http://www.w3.org/2000/svg" width="90" height="46" viewBox="0 0 90 46">
+                        <g fill="none" fill-rule="evenodd">
+                            <path fill="#000" d="M.415 34.9h8.26V10.915H.414V34.9zM4.522 8.622c2.583 0 4.567-1.789 4.567-4.22 0-2.43-1.984-4.264-4.567-4.264C1.938.138 0 1.972 0 4.402c0 2.431 1.938 4.22 4.522 4.22zM13.868 34.9h8.213V16.51h4.89v-5.595h-4.89v-2.11c0-1.559.83-2.613 2.767-2.613.923 0 1.661.137 2.26.32V.505C26.003.23 24.849 0 23.327 0c-5.721 0-9.458 2.844-9.458 8.805v2.11h-3.045v5.595h3.045V34.9zm21.73.55c3.874 0 5.996-1.604 7.15-3.347V34.9h8.027V19.354c0-6.376-4.244-9.082-10.887-9.082-6.598 0-11.165 2.844-11.534 8.623h7.751c.185-1.514 1.014-2.844 3.275-2.844 2.63 0 3.184 1.514 3.184 3.806v.551h-2.307c-8.027 0-12.826 2.202-12.826 7.842 0 5.091 3.83 7.2 8.166 7.2zm2.86-5.549c-1.938 0-2.86-.87-2.86-2.247 0-1.972 1.475-2.614 4.797-2.614h2.169v1.468c0 2.063-1.754 3.393-4.106 3.393zm19.703 5h8.028l3.736-13.392 3.6 13.391h7.888l7.659-23.985h-7.843L77.307 25.27 73.71 10.915h-6.644l-4.06 14.355L59.5 10.915h-8.627l7.29 23.985z"/>
+                            <path fill="#007DFA" d="M28.75 45.845L51.139 45.845 51.139 40.25 28.75 40.25z"/>
+                        </g>
+                    </svg>
+                  </div>
+                  <div class="right">
+                    <h2 class="small-title">${this.options.heading_top}</h2>
+                    <h2 class="small-success success">${
+                      this.options.success_top
+                    }</h2>
+                    <p class="form-desc">
+                      ${this.options.paragraph}
+                    </p>
+                    <form id="sign-up-form">
+                      <div class="group">      
+                        <input type="text" name="first_name" autocomplete="given-name" required>
+                        <label>${this.options.first_name}</label>
+                      </div>
+                      <div class="group">      
+                        <input type="text" name="last_name" autocomplete="family-name" required>
+                        <label>${this.options.last_name}</label>
+                      </div>
+                      <div class="group">      
+                        <input type="email" name="email" autocomplete="email" required>
+                        <label>${this.options.email}</label>
+                      </div>
+                      <div class="group">      
+                        <select name="country" autocomplete="country">
+                          ${this.loadCountries()}
+                        </select>
+                      </div>
+                      <div class="submit">
+                        <button class="cta" type="button"><span>${
+                          this.options.button_label
+                        }</span></button>
+                      </div>
+                    </form>
+                    <h2 class="small-subtitle">${
+                      this.options.heading_bottom
+                    }</h2>
+                    <p class="small-success success">${
+                      this.options.success_bottom
+                    }</p>
+                  </div>
+                </div>
+            </div>
+            `;
+        let overlay = document.createElement("div");
+        overlay.id = this.overlayID;
+        overlay.classList.add("is-hidden");
+        overlay.classList.add(this.lang);
+        overlay.classList.add(this.options.mode);
+        overlay.classList.add("ifawModal");
+        overlay.innerHTML = markup;
+        const closeButton = overlay.querySelector(".button-close");
+        closeButton.addEventListener("click", this.close.bind(this));
+        overlay.addEventListener("click", (e) => {
+          if (e.target.id == this.overlayID) {
+            this.close(e);
+          }
+        });
+        document.addEventListener("keyup", (e) => {
+          if (e.key === "Escape") {
+            closeButton.click();
+          }
+        });
+        // Select the current country
+        const country = this.lang.split("-");
+        const countrySelect = overlay.querySelector("select");
+        if (1 in country) {
+          countrySelect.value = country[1];
         }
-      });
-    }
-    if (triggerType === "pixels") {
-      document.addEventListener(
-        "scroll",
-        this.scrollTriggerPx.bind(this),
-        true
-      );
-    }
-    if (triggerType === "percent") {
-      document.addEventListener(
-        "scroll",
-        this.scrollTriggerPercent.bind(this),
-        true
-      );
-    }
+        // Submit the Form
+        const formBtn = overlay.querySelector("form button.cta");
+        formBtn.addEventListener("click", this.submit.bind(this));
+
+        this.overlay = overlay;
+        document.body.appendChild(overlay);
+        const triggerType = this.getTriggerType(this.options.trigger);
+        console.log("Trigger type: ", triggerType);
+        if (triggerType === false) {
+          this.options.trigger = 2000;
+        }
+        if (triggerType === "seconds") {
+          this.options.trigger = Number(this.options.trigger) * 1000;
+        }
+        if (triggerType === "seconds" || triggerType === false) {
+          window.setTimeout(this.open.bind(this), this.options.trigger);
+        }
+        if (triggerType === "exit") {
+          document.body.addEventListener("mouseout", (e) => {
+            if (e.clientY < 0 && !this.triggered) {
+              this.open();
+              this.triggered = true;
+            }
+          });
+        }
+        if (triggerType === "pixels") {
+          document.addEventListener(
+            "scroll",
+            this.scrollTriggerPx.bind(this),
+            true
+          );
+        }
+        if (triggerType === "percent") {
+          document.addEventListener(
+            "scroll",
+            this.scrollTriggerPercent.bind(this),
+            true
+          );
+        }
+      }
+    });
   }
   open() {
     window.dataLayer.push({ event: "lightbox_display" });
@@ -178,10 +195,14 @@ export class Modal {
     this.overlay.classList.remove("is-hidden");
   }
   // Should we run the script?
-  shouldRun() {
-    console.log(this.options);
+  async shouldRun() {
+    // console.log(this.options);
     let hideSignUpForm = !!parseInt(crumbs.get(this.options.cookie_name)); // Get cookie
+    let hasCrossDomainCookie = !!(await this.getCrossDomainCookie());
+
+    console.log("Has Cross-Domain Cookie?", hasCrossDomainCookie);
     return (
+      !hasCrossDomainCookie &&
       !hideSignUpForm &&
       !this.isBlacklisted() &&
       this.isWhitelisted() &&
@@ -270,13 +291,13 @@ export class Modal {
           if ("result" in response.data && response.data.result == "success") {
             self.success();
           }
-          console.log(response);
+          // console.log(response);
         })
         .catch(function(response) {
           //handle error
           button.classList.remove("loading");
           alert("Error while subscribring. Please check your e-mail address.");
-          console.log(response);
+          // console.log(response);
         });
     });
   }
@@ -307,7 +328,13 @@ export class Modal {
     form.style.display = "none";
     form_desc.style.visibility = "hidden";
     // Create Cookie
-    crumbs.set(this.options.cookie_name, 1, { type: "month", value: 12 }); // Create one year cookie
+    crumbs.set(this.options.cookie_name, 1, {
+      type: "month",
+      value: 12,
+    }); // Create one year cookie
+    // Create a cross-domain 1 year cookie
+    const expires = 365 * 24 * 60 * 60 * 1000;
+    this.cds.storeValue(crossDomainCookieName, 1, expires);
   }
   validateEmail(email) {
     const re = /\S+@\S+\.\S+/;
@@ -776,5 +803,29 @@ export class Modal {
       this.open();
       this.triggered = true;
     }
+  }
+
+  loadScript(url, callback) {
+    // Adding the script tag to the head as suggested before
+    var head = document.head;
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = url;
+
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = callback;
+    script.onload = callback;
+
+    // Fire the loading
+    head.appendChild(script);
+  }
+  getCrossDomainCookie() {
+    return new Promise((resolve) => {
+      this.cds.requestValue(crossDomainCookieName, (response) => {
+        console.log("Retrieved cookie value", response.value);
+        resolve(response.value);
+      });
+    });
   }
 }

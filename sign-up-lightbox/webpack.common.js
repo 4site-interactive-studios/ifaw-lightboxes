@@ -3,7 +3,7 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
-    main: "./src/index.js"
+    main: "./src/index.js",
   },
   module: {
     rules: [
@@ -13,9 +13,9 @@ module.exports = {
           loader: "file-loader",
           options: {
             name: "[name].[hash].[ext]",
-            outputPath: "imgs"
-          }
-        }
+            outputPath: "imgs",
+          },
+        },
       },
       {
         test: /\.js$/,
@@ -23,11 +23,21 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"],
-            plugins: ["@babel/plugin-proposal-object-rest-spread"]
-          }
-        }
-      }
-    ]
-  }
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  useBuiltIns: "usage", // alternative mode: "entry"
+                  corejs: 3, // default would be 2
+                  targets: "> 0.25%, not dead",
+                  // set your own target environment here (see Browserslist)
+                },
+              ],
+            ],
+            plugins: ["@babel/plugin-proposal-object-rest-spread"],
+          },
+        },
+      },
+    ],
+  },
 };

@@ -1,4 +1,4 @@
-const crumbs = {
+export const crumbs = {
   debug: false,
   setDebug: function(isDebug) {
     try {
@@ -30,15 +30,15 @@ const crumbs = {
         // If name is an array, support mass set of cookies
         var mass_set_cookies_array = name;
         // Name change for comfort purposes
-        mass_set_cookies_array.forEach(v => {
+        mass_set_cookies_array.forEach((v) => {
           // Check to see correct setting format on all cookies with mass set
           if (!v.hasOwnProperty("name") || !v.hasOwnProperty("value"))
             throw "Mass cookie set failed, on or more object properties are incorrect.";
         });
-        var succeeded_set_cookies = mass_set_cookies_array.map(c => {
+        var succeeded_set_cookies = mass_set_cookies_array.map((c) => {
           return this.set(c.name, c.value, c.expires, c.domain) ? c : false;
         });
-        return succeeded_set_cookies.filter(x => {
+        return succeeded_set_cookies.filter((x) => {
           return x;
         });
       }
@@ -74,9 +74,9 @@ const crumbs = {
         d.toUTCString();
         cookie_expires = `expires=${d}`;
       }
-      cookie_domain = domain != undefined ? `path=${domain};` : domain;
+      cookie_domain = domain != undefined ? `path=${domain};` : `path=/;`;
       let cookie_to_be_added =
-        "" + `${name}=${value};${cookie_expires}ף${cookie_domain}`;
+        "" + `${name}=${value};${cookie_expires};${cookie_domain}`;
       document.cookie = cookie_to_be_added;
       return true;
     } catch (e) {
@@ -89,7 +89,7 @@ const crumbs = {
     try {
       var all_cookies = decodeURIComponent(document.cookie);
       all_cookies = all_cookies.split("; ");
-      var returned_cookie = all_cookies.filter(c => {
+      var returned_cookie = all_cookies.filter((c) => {
         var c = c.split("=");
         return c[0] === name ? 1 : 0;
       });
@@ -107,7 +107,7 @@ const crumbs = {
       var all_cookies = decodeURIComponent(document.cookie);
       all_cookies = all_cookies.split("; ");
       return all_cookies[0]
-        ? all_cookies.map(c => {
+        ? all_cookies.map((c) => {
             var c = c.split("=");
             return { name: c[0], value: c[1] };
           })
@@ -124,7 +124,7 @@ const crumbs = {
         // If name is an array, support mass delete of cookies
         var mass_set_cookies_array = name;
         // Name change for comfort purposes
-        mass_set_cookies_array.forEach(v => {
+        mass_set_cookies_array.forEach((v) => {
           this.delete(v);
         });
         return true;
@@ -139,7 +139,7 @@ const crumbs = {
     // Deletes all cookies
     try {
       var all_cookies = decodeURIComponent(document.cookie);
-      all_cookies = all_cookies.split("; ").map(c => {
+      all_cookies = all_cookies.split("; ").map((c) => {
         var c = c.split("=");
         return this.delete(c[0]);
       });
@@ -169,15 +169,15 @@ const crumbs = {
       try {
         if (Array.isArray(key)) {
           // If key is an array, support mass set of local storage values
-          key.forEach(v => {
+          key.forEach((v) => {
             if (!v.hasOwnProperty("key") || !v.hasOwnProperty("value"))
               throw "Mass key-value pair set failed, on or more object properties are incorrect.";
           });
           return key
-            .map(v => {
+            .map((v) => {
               this.set(v.key, v.value);
             })
-            .filter(x => x);
+            .filter((x) => x);
         }
         this.ls.setItem(key, JSON.stringify(value));
         return true;
@@ -200,10 +200,10 @@ const crumbs = {
         if (Array.isArray(key)) {
           // If key is an array, support mass get of local storage values
           return key
-            .map(k => {
+            .map((k) => {
               return { key: k, value: this.get(k) };
             })
-            .filter(x => x);
+            .filter((x) => x);
         }
         return asJSON ? JSON.parse(this.ls.getItem(key)) : this.ls.getItem(key);
       } catch (e) {
@@ -233,7 +233,7 @@ const crumbs = {
             continue;
           return_array.push({
             key: idx,
-            value: asJSON ? JSON.parse(this.ls[idx]) : this.ls[idx]
+            value: asJSON ? JSON.parse(this.ls[idx]) : this.ls[idx],
           });
         }
         return return_array;
@@ -269,8 +269,8 @@ const crumbs = {
         this.throwError(e);
         return false;
       }
-    }
-  }
+    },
+  },
 };
 
 export default crumbs;

@@ -6,6 +6,14 @@ const crossDomainCookie = "https://cds.ifaw.org/cross-domain.js";
 const crossDomainCookieName = "IfawSignedUp";
 export class Modal {
   constructor(options) {
+    // Load CrossDomainScript ONCE
+    if (!window.hasOwnProperty("crossDomainLoaded")) {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = crossDomainCookie;
+      document.head.appendChild(script);
+    }
+    window.crossDomainLoaded = true;
     const footer_form = document.querySelector("footer form");
     this.lang = document.documentElement.lang;
     window.dataLayer = window.dataLayer || [];
@@ -45,18 +53,18 @@ export class Modal {
     this.init();
   }
   async init() {
-    this.loadScript(crossDomainCookie, async () => {
-      let domain = new URL(crossDomainCookie);
-      this.cds = new CrossDomainStorage(domain.origin, "/");
-      let shouldRun = await this.shouldRun();
-      console.log("Should Run?", shouldRun);
-      if (shouldRun) {
-        // Create a cookie with value as 0 if script can run
-        crumbs.set(this.options.cookie_name, 0, {
-          type: "day",
-          value: 1,
-        });
-        const markup = `
+    await this.waitForCrossDomain();
+    let domain = new URL(crossDomainCookie);
+    this.cds = new CrossDomainStorage(domain.origin, "/");
+    let shouldRun = await this.shouldRun();
+    console.log("Should Run?", shouldRun);
+    if (shouldRun) {
+      // Create a cookie with value as 0 if script can run
+      crumbs.set(this.options.cookie_name, 0, {
+        type: "day",
+        value: 1,
+      });
+      const markup = `
             <div class="ifawModal-container">
                 <a href="#" class="button-close"></a>
                 <div class="content">
@@ -122,72 +130,80 @@ export class Modal {
                 </div>
             </div>
             `;
-        let overlay = document.createElement("div");
-        overlay.id = this.overlayID;
-        overlay.classList.add("is-hidden");
-        overlay.classList.add(this.lang);
-        overlay.classList.add(this.options.mode);
-        overlay.classList.add("ifawModal");
-        overlay.innerHTML = markup;
-        const closeButton = overlay.querySelector(".button-close");
-        closeButton.addEventListener("click", this.close.bind(this));
-        overlay.addEventListener("click", (e) => {
-          if (e.target.id == this.overlayID) {
-            this.close(e);
-          }
-        });
-        document.addEventListener("keyup", (e) => {
-          if (e.key === "Escape") {
-            closeButton.click();
-          }
-        });
-        // Select the current country
-        const country = this.lang.split("-");
-        const countrySelect = overlay.querySelector("select");
-        if (1 in country) {
-          countrySelect.value = country[1];
+      let overlay = document.createElement("div");
+      overlay.id = this.overlayID;
+      overlay.classList.add("is-hidden");
+      overlay.classList.add(this.lang);
+      overlay.classList.add(this.options.mode);
+      overlay.classList.add("ifawModal");
+      overlay.innerHTML = markup;
+      const closeButton = overlay.querySelector(".button-close");
+      closeButton.addEventListener("click", this.close.bind(this));
+      overlay.addEventListener("click", (e) => {
+        if (e.target.id == this.overlayID) {
+          this.close(e);
         }
-        // Submit the Form
-        const formBtn = overlay.querySelector("form button.cta");
-        formBtn.addEventListener("click", this.submit.bind(this));
-
-        this.overlay = overlay;
-        document.body.appendChild(overlay);
-        const triggerType = this.getTriggerType(this.options.trigger);
-        console.log("Trigger type: ", triggerType);
-        if (triggerType === false) {
-          this.options.trigger = 2000;
+      });
+      document.addEventListener("keyup", (e) => {
+        if (e.key === "Escape") {
+          closeButton.click();
         }
-        if (triggerType === "seconds") {
-          this.options.trigger = Number(this.options.trigger) * 1000;
-        }
-        if (triggerType === "seconds" || triggerType === false) {
-          window.setTimeout(this.open.bind(this), this.options.trigger);
-        }
-        if (triggerType === "exit") {
-          document.body.addEventListener("mouseout", (e) => {
-            if (e.clientY < 0 && !this.triggered) {
-              this.open();
-              this.triggered = true;
-            }
-          });
-        }
-        if (triggerType === "pixels") {
-          document.addEventListener(
-            "scroll",
-            this.scrollTriggerPx.bind(this),
-            true
-          );
-        }
-        if (triggerType === "percent") {
-          document.addEventListener(
-            "scroll",
-            this.scrollTriggerPercent.bind(this),
-            true
-          );
-        }
+      });
+      // Select the current country
+      const country = this.lang.split("-");
+      const countrySelect = overlay.querySelector("select");
+      if (1 in country) {
+        countrySelect.value = country[1];
       }
-    });
+      // Submit the Form
+      const formBtn = overlay.querySelector("form button.cta");
+      formBtn.addEventListener("click", this.submit.bind(this));
+
+      this.overlay = overlay;
+      document.body.appendChild(overlay);
+      const triggerType = this.getTriggerType(this.options.trigger);
+      console.log("Trigger type: ", triggerType);
+      if (triggerType === false) {
+        this.options.trigger = 2000;
+      }
+      if (triggerType === "seconds") {
+        this.options.trigger = Number(this.options.trigger) * 1000;
+      }
+      if (triggerType === "seconds" || triggerType === false) {
+        window.setTimeout(this.open.bind(this), this.options.trigger);
+      }
+      if (triggerType === "exit") {
+        document.body.addEventListener("mouseout", (e) => {
+          if (e.clientY < 0 && !this.triggered) {
+            this.open();
+            this.triggered = true;
+          }
+        });
+      }
+      if (triggerType === "pixels") {
+        document.addEventListener(
+          "scroll",
+          this.scrollTriggerPx.bind(this),
+          true
+        );
+      }
+      if (triggerType === "percent") {
+        document.addEventListener(
+          "scroll",
+          this.scrollTriggerPercent.bind(this),
+          true
+        );
+      }
+    }
+  }
+  wait(milliseconds) {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  }
+  async waitForCrossDomain() {
+    while (typeof CrossDomainStorage != "function") {
+      await this.wait(200);
+    }
+    return true;
   }
   open() {
     window.dataLayer.push({ event: "lightbox_display" });
@@ -343,7 +359,7 @@ export class Modal {
   isWhitelisted() {
     var ret = true;
     if (this.options.whitelist.length) {
-      var url = window.location.pathname;
+      var url = window.location.pathname + window.location.search;
       // Change the default since now we need to show ONLY in whitelisted places
       ret = false;
       this.options.whitelist.forEach((test) => {
@@ -357,7 +373,7 @@ export class Modal {
   isBlacklisted() {
     var ret = false;
     if (this.options.blacklist.length) {
-      var url = window.location.pathname;
+      var url = window.location.pathname + window.location.search;
       this.options.blacklist.forEach((test) => {
         console.log("Checking Blacklist", test);
         if (url.match(new RegExp(test))) ret = true;
@@ -805,20 +821,26 @@ export class Modal {
     }
   }
 
-  loadScript(url, callback) {
-    // Adding the script tag to the head as suggested before
-    var head = document.head;
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = url;
+  async loadScript(url, callback) {
+    if ("crossDomainLoaded" in window) {
+      await this.waitForCrossDomain();
+      callback();
+    } else {
+      window.crossDomainLoaded = true;
+      var head = document.head;
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = url;
 
-    // Then bind the event to the callback function.
-    // There are several events for cross browser compatibility.
-    script.onreadystatechange = callback;
-    script.onload = callback;
+      // Then bind the event to the callback function.
+      // There are several events for cross browser compatibility.
+      // script.onreadystatechange = callback;
+      // script.onload = callback;
 
-    // Fire the loading
-    head.appendChild(script);
+      head.appendChild(script);
+      await this.waitForCrossDomain();
+      callback();
+    }
   }
   getCrossDomainCookie() {
     return new Promise((resolve) => {

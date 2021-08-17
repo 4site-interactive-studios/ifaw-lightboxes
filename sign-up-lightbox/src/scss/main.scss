@@ -16,6 +16,9 @@ $cta: #007cf9;
     transform: rotate(360deg);
   }
 }
+body.has-modal {
+  overflow: hidden;
+}
 .ifawModal {
   .button-close {
     position: absolute;
@@ -63,7 +66,7 @@ $cta: #007cf9;
     line-height: 1;
     z-index: 1;
     position: relative;
-
+    margin: auto;
     @include to(2) {
       width: 90%;
       height: auto;
@@ -386,7 +389,8 @@ $cta: #007cf9;
       max-width: 200px;
     }
   }
-  &.big {
+  &.big,
+  &.image {
     position: fixed;
     top: 0;
     left: 0;
@@ -396,9 +400,9 @@ $cta: #007cf9;
     width: 100vw;
     height: 100%;
     transition: top 0.4s ease-in-out;
+    overflow-y: auto;
     display: flex;
     justify-content: center;
-    overflow: hidden;
     align-items: center;
     &.is-hidden {
       top: -100vh;
@@ -406,7 +410,7 @@ $cta: #007cf9;
     .small-success,
     .small-title,
     .small-subtitle {
-      display: none !important;
+      display: none;
     }
     form {
       .group {
@@ -415,7 +419,106 @@ $cta: #007cf9;
         max-height: 100px !important;
       }
       .cta {
-        margin-top: 50px;
+        margin-top: 30px;
+      }
+    }
+    &.signed-up .right {
+      visibility: hidden;
+    }
+  }
+  &.image {
+    .ifawModal-container {
+      padding: 30px;
+      height: auto;
+      .content {
+        min-height: 440px;
+      }
+    }
+    .content {
+      .left {
+        position: relative;
+        overflow: hidden;
+        margin-right: 30px;
+        .title,
+        .subtitle {
+          @include from(3) {
+            display: none;
+          }
+        }
+        .arrow {
+          display: none;
+        }
+        .logo {
+          bottom: 5px;
+          left: 10px;
+          filter: drop-shadow(0.2rem 0.2rem 0.3rem rgba(255, 255, 255, 0.8));
+        }
+        .media {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          display: none;
+          width: 100%;
+          @include from(3) {
+            display: block;
+          }
+          img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            max-width: 100%;
+            object-fit: cover;
+            object-position: center;
+          }
+        }
+        .media-mobile {
+          margin-top: 20px;
+          margin-bottom: 10px;
+          @include from(3) {
+            display: none;
+          }
+          img {
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            margin: auto;
+            max-width: 100%;
+          }
+        }
+      }
+    }
+
+    .right {
+      .small-title,
+      .small-subtitle {
+        @include from(3) {
+          display: block;
+          font-family: graphik, sans-serif;
+          box-sizing: border-box;
+          font-weight: bold;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1;
+          letter-spacing: -1.5px;
+          text-transform: lowercase;
+          font-size: 32px;
+          margin: auto;
+        }
+      }
+      .small-subtitle,
+      .small-success {
+        margin-bottom: 10px;
+      }
+    }
+    &.signed-up {
+      .right {
+        visibility: visible;
+        @include to(2) {
+          visibility: hidden;
+        }
       }
     }
   }

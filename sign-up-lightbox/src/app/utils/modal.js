@@ -44,7 +44,9 @@ export class Modal {
       dates: [],
       double_opt_in_required: "0",
       source: "lightbox",
-      mode: "big", // big, small-single, small-multi
+      image: "",
+      image_mobile: "",
+      mode: "big", // image, big, small-single, small-multi
       trigger: 0, // int-seconds, px-scroll location, %-scroll location, exit-mouse leave
     };
     this.triggered = false;
@@ -69,9 +71,9 @@ export class Modal {
                 <a href="#" class="button-close"></a>
                 <div class="content">
                   <div class="left">
+                    ${this.loadImage()}
                     <h2 class="title">${this.options.heading_top}</h2>
                     <h2 class="success">${this.options.success_top}</h2>
-
                     <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="367" height="194" viewBox="0 0 367 194">
                         <g fill="#007EFF">
                             <path d="M10 41L36 41 23 3z" transform="translate(-6.29 -11.152) rotate(-58 23 22)"/>
@@ -87,12 +89,19 @@ export class Modal {
                             <path fill="#007DFA" d="M28.75 45.845L51.139 45.845 51.139 40.25 28.75 40.25z"/>
                         </g>
                     </svg>
+                    ${this.loadImageMobile()}
                   </div>
                   <div class="right">
                     <h2 class="small-title">${this.options.heading_top}</h2>
                     <h2 class="small-success success">${
                       this.options.success_top
                     }</h2>
+                    <h2 class="small-subtitle">${
+                      this.options.heading_bottom
+                    }</h2>
+                    <p class="small-success success">${
+                      this.options.success_bottom
+                    }</p>
                     <p class="form-desc">
                       ${this.options.paragraph}
                     </p>
@@ -120,12 +129,6 @@ export class Modal {
                         }</span></button>
                       </div>
                     </form>
-                    <h2 class="small-subtitle">${
-                      this.options.heading_bottom
-                    }</h2>
-                    <p class="small-success success">${
-                      this.options.success_bottom
-                    }</p>
                   </div>
                 </div>
             </div>
@@ -209,6 +212,8 @@ export class Modal {
     window.dataLayer.push({ event: "lightbox_display" });
 
     this.overlay.classList.remove("is-hidden");
+    if (["image", "big"].includes(this.options.mode))
+      document.body.classList.add("has-modal");
   }
   // Should we run the script?
   async shouldRun() {
@@ -231,6 +236,8 @@ export class Modal {
     e.preventDefault();
     crumbs.set(this.options.cookie_name, 1, { type: "day", value: 1 }); // Create one day cookie
     this.overlay.classList.add("is-hidden");
+    if (["image", "big"].includes(this.options.mode))
+      document.body.classList.remove("has-modal");
   }
 
   submit(e) {
@@ -319,6 +326,7 @@ export class Modal {
   }
   success() {
     window.dataLayer.push({ event: "lightbox_submit" });
+    this.overlay.classList.add("signed-up");
     let form = document.querySelector("#" + this.overlayID + " form");
     let form_desc = document.querySelector(
       "#" + this.overlayID + " .form-desc"
@@ -849,5 +857,15 @@ export class Modal {
         resolve(response.value);
       });
     });
+  }
+  loadImage() {
+    return this.options.mode === "image" && this.options.image !== ""
+      ? `<div class="media"><img src="${this.options.image}" alt="${this.options.heading_top}"></div>`
+      : "";
+  }
+  loadImageMobile() {
+    return this.options.mode === "image" && this.options.image_mobile !== ""
+      ? `<div class="media-mobile"><img src="${this.options.image_mobile}" alt="${this.options.heading_top}"></div>`
+      : "";
   }
 }

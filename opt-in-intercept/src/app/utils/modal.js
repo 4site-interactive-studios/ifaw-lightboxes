@@ -119,7 +119,7 @@ export class Modal {
   isBlacklisted() {
     var ret = false;
     if (this.options.blacklist.length) {
-      var url = window.location.pathname;
+      var url = window.location.pathname + window.location.search;
       this.options.blacklist.forEach((test) => {
         console.log("Checking Blacklist", test);
         if (url.match(new RegExp(test))) ret = true;
